@@ -7,10 +7,6 @@ CommandRegistry::CommandRegistry()
 	cRegistry["MUL"] = new Mul();
 	cRegistry["DIV"] = new Div();
 	cRegistry["HELP"] = new Help();
-
-	///TODO: Need to do this part as well
-	// cRegistry["CREATE"] = new Create();
-	// cRegistry["RUN"] = new Run();
 }
 
 CommandRegistry::~CommandRegistry()
@@ -19,10 +15,6 @@ CommandRegistry::~CommandRegistry()
 	{
 		delete command.second;
 	}
-
-	///TODO: Need to do this part as well
-	// cRegistry["CREATE"] = new Create();
-	// cRegistry["RUN"] = new Run();
 }
 
 bool	CommandRegistry::existsCommand(const std::string& command) const

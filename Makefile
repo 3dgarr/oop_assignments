@@ -2,36 +2,31 @@ NAME		= parser
 MODULES		= $(shell cd src && find * -type d)
 
 SDIR		= src/
-ODIR		= obj/
 INCDIR		= include/
-OBJDIR_NAME	= obj/
+OBJDIR		= obj/
 
-CXXFLAGS	= -Wall -Wextra -g3 -std=c++17 #-fsanitize=address # -Werror
+CXXFLAGS	= -Wall -Wextra -Werror -g3 -std=c++17 -I $(INCDIR) -fsanitize=address 
 
 SRCS		= $(wildcard src/*.cpp)
-TEMP		= $(subst $(SDIR),$(ODIR),$(SRCS))
-OBJS		= $(SRCS:.cpp=.o)
+TEMP		= $(SRCS:.cpp=.o)
+OBJS		= $(subst $(SDIR), $(OBJDIR), $(TEMP))
 HEADERS		= $(wildcard $(INCDIR)/*.hpp)
 
-vpath %.cpp $(SRCDIR)
+vpath %.cpp $(SDIR)
 
-define compile
-$1/%.o: %.cpp $(HEADERS)
-	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $$< -o $$@
-endef
-
-$(foreach dir, $(OBJDIR), $(eval $(call compile, $(dir))))
+obj/%.o: %.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 all: mkdir $(NAME)
 
 mkdir:
-	@if [ ! -d "$(OBJDIR_NAME)" ]; then mkdir -p $(OBJDIR) ; fi
+	@mkdir -p $(OBJDIR)
 
 $(NAME): $(OBJS)
 	$(CXX) $(OBJS) $(CXXFLAGS) -o $(NAME)
 
 clean:
-	rm -f $(OBJS)
+	rm -rf $(OBJDIR)
 
 fclean: clean
 	rm -f $(NAME)
@@ -39,9 +34,9 @@ fclean: clean
 re:	fclean all
 
 .PHONY: all clean fclean re mkdir
+
 #COLORS
 RED = \033[1;31m
 GREEN = \033[1;32m
 YELLOW = \033[1;33m
 DEFAULT = \033[0m
-#  `shuf -i 1-1000 -n 3000 | tr "\n" " " `

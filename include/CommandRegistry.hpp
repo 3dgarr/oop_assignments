@@ -17,11 +17,4 @@ class CommandRegistry
 		std::map<std::string, Command*>	cRegistry;
 };
 
-//նույն խնդիրը + 
-/*
-	create ADD ...
-	run ...
-*/
-
-
 # endif //COMMAND_REGISTRY_HPP

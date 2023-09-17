@@ -19,8 +19,6 @@ void Validator::tokenize(const std::string& input, StrVector& tokens)
 			continue;
 		tokens.push_back(tmp);
 	}	
-
-
 }
 
 void	Validator::checkIdxOfCmd(const std::string& commnad)
@@ -82,7 +80,6 @@ void	Validator::validateOperands(const StrVector& operandVector, std::vector<dou
 		}
 		doubleOperandVector.push_back(temp);		
 	}
-	
 }
 
 void Validator::validateTokens(CommandInfo&	CommandInfo, StrVector& tokens, const CommandRegistry& registry)

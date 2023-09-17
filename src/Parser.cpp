@@ -20,36 +20,21 @@ void	Parser::run()
 					break;
 				case CREATE:
 					Validator::validateTokens(commandInfo, tokens,  registry);
-					std::cout << "bareeev\n";
 					executor.execute(commandInfo, registry);
 					break;
 				case RUN :
 					Validator::validateSingleCommand(tokens);
 					executor.execute(commandInfo, registry);
-					// executor.printResult();
-					///TODO: LOGIC FOR RUN
 					break;
 				case HELP :
 					Validator::validateSingleCommand(tokens);
 					executor.execute(commandInfo, registry);
-					///TODO: LOGIC FOR RUN
 					break;
 				case EXIT :
 					Validator::validateSingleCommand(tokens);
 					executor.execute(commandInfo, registry);
-					///TODO: LOGIC FOR RUN
 				break;
 			}
-
-			// std::cout << "COMMAND:\t" << commandInfo.command << std::endl;
-			// std::cout << "MODE:\t\t" << commandInfo.mode << std::endl;
-			// std::cout << "OPERANDS:\t" ;
-			// for (auto operand : commandInfo.operands)
-			// {
-			// 	std::cout << operand << " ";
-			// }
-			// std::cout << "\n";
-
 		}
 		catch(const std::exception& e)
 		{
