@@ -12,10 +12,11 @@ struct CommandInfo;
 class Executor
 {
 	public:
-		void execute(CommandInfo commandInfo,  CommandRegistry& registry);
+		void execute(CommandInfo& commandInfo,  CommandRegistry& registry);
+		void printResult() const;
+		void printHelpMessage() const;
 	
 	private:
-		void printResult() const;
 
 	public:
 		Executor();

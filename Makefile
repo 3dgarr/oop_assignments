@@ -1,31 +1,44 @@
-CXX			= c++
 NAME		= parser
-SRCS		= $(wildcard *.cpp)
+MODULES		= $(shell cd src && find * -type d)
+
+SDIR		= src/
+ODIR		= obj/
+INCDIR		= include/
+OBJDIR_NAME	= obj/
+
+CXXFLAGS	= -Wall -Wextra -g3 -std=c++17 #-fsanitize=address # -Werror
+
+SRCS		= $(wildcard src/*.cpp)
+TEMP		= $(subst $(SDIR),$(ODIR),$(SRCS))
 OBJS		= $(SRCS:.cpp=.o)
-CXXFLAGS	= -Wall -Wextra -Werror -fsanitize=address -g -std=c++17
+HEADERS		= $(wildcard $(INCDIR)/*.hpp)
 
-%.o:%.cpp $(wildcard *.hpp)
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+vpath %.cpp $(SRCDIR)
 
-all: $(NAME)
+define compile
+$1/%.o: %.cpp $(HEADERS)
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $$< -o $$@
+endef
+
+$(foreach dir, $(OBJDIR), $(eval $(call compile, $(dir))))
+
+all: mkdir $(NAME)
+
+mkdir:
+	@if [ ! -d "$(OBJDIR_NAME)" ]; then mkdir -p $(OBJDIR) ; fi
 
 $(NAME): $(OBJS)
-	$(CXX) $(CXXFLAGS) $(OBJS) -o $(NAME)
-	@echo "$(GREEN)✅ Compiled!$(DEFAULT)"
+	$(CXX) $(OBJS) $(CXXFLAGS) -o $(NAME)
 
 clean:
-	@rm -f *.o
-	@echo "$(RED)🧨 Objects are destroyed$(DEFAULT)"
+	rm -f $(OBJS)
 
 fclean: clean
-	@rm -f $(NAME)
-	@echo "$(RED)🧨 Executable is destroyed$(DEFAULT)"
+	rm -f $(NAME)
 
+re:	fclean all
 
-re: fclean all
-
-.PHONY: all clean fclean re
-
+.PHONY: all clean fclean re mkdir
 #COLORS
 RED = \033[1;31m
 GREEN = \033[1;32m

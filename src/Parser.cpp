@@ -1,10 +1,8 @@
 #include "Parser.hpp"
 
-
-
 void	Parser::run()
 {
-	while (true)
+	while (commandInfo.notDone)
 	{
 		printMsg("Enter the expression:\n", YELLOW);
 		try
@@ -18,23 +16,39 @@ void	Parser::run()
 			{
 				case NORMAL:
 					Validator::validateTokens(commandInfo, tokens,  registry);
+					executor.execute(commandInfo, registry);
 					break;
 				case CREATE:
 					Validator::validateTokens(commandInfo, tokens,  registry);
-				case COMMAND_MODE::RUN :
+					std::cout << "bareeev\n";
+					executor.execute(commandInfo, registry);
+					break;
+				case RUN :
+					Validator::validateSingleCommand(tokens);
+					executor.execute(commandInfo, registry);
+					// executor.printResult();
 					///TODO: LOGIC FOR RUN
 					break;
+				case HELP :
+					Validator::validateSingleCommand(tokens);
+					executor.execute(commandInfo, registry);
+					///TODO: LOGIC FOR RUN
+					break;
+				case EXIT :
+					Validator::validateSingleCommand(tokens);
+					executor.execute(commandInfo, registry);
+					///TODO: LOGIC FOR RUN
+				break;
 			}
 
-			std::cout << "COMMAND:\t" << commandInfo.command << std::endl;
-			std::cout << "MODE:\t\t" << commandInfo.mode << std::endl;
-			std::cout << "OPERANDS:\t" ;
-			for (auto operand : commandInfo.operands)
-			{
-				std::cout << operand << " ";
-			}
-			std::cout << "\n";
-			executor.execute(commandInfo, registry);
+			// std::cout << "COMMAND:\t" << commandInfo.command << std::endl;
+			// std::cout << "MODE:\t\t" << commandInfo.mode << std::endl;
+			// std::cout << "OPERANDS:\t" ;
+			// for (auto operand : commandInfo.operands)
+			// {
+			// 	std::cout << operand << " ";
+			// }
+			// std::cout << "\n";
 
 		}
 		catch(const std::exception& e)
@@ -46,22 +60,30 @@ void	Parser::run()
 
 void Parser::determineModeOfCommand(StrVector& tokens)
 {
-	if (tokens.front() == _CREATE)
+	if (tokens.front() == Validator::_CREATE)
 	{
 		commandInfo.mode = COMMAND_MODE::CREATE;
-		tokens.erase(tokens.begin());
-		tokens.shrink_to_fit();
 	}
-	else if (tokens.front() == _RUN)
+	else if (tokens.front() == Validator::_RUN)
 	{
 		commandInfo.mode = COMMAND_MODE::RUN;
-		tokens.erase(tokens.begin());
-		tokens.shrink_to_fit();
+	}
+	else if (tokens.front() == Validator::_HELP)
+	{
+		commandInfo.mode = COMMAND_MODE::HELP;
+	}
+	else if (tokens.front() == Validator::_EXIT)
+	{
+		commandInfo.mode = COMMAND_MODE::EXIT;
 	}
 	else
+	{
 		commandInfo.mode = COMMAND_MODE::NORMAL;
+		return ;
+	}
+	tokens.erase(tokens.begin());
+	tokens.shrink_to_fit();
 }
-
 
 void Parser::clearContainers()
 {

@@ -15,7 +15,9 @@ enum COMMAND_MODE
 {
 	NORMAL,
 	CREATE,
-	RUN
+	RUN,
+	HELP,
+	EXIT
 };
 
 struct CommandInfo
@@ -23,6 +25,7 @@ struct CommandInfo
 	std::string			command;
 	std::vector<double>	operands;
 	COMMAND_MODE		mode;
+	bool				notDone{true};
 };
 
 # endif//	UTILS_HPP

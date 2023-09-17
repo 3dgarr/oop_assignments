@@ -1,5 +1,11 @@
 #include	"Validator.hpp"
 
+const char* Validator::_OP = "-op" ;
+const char* Validator::_CREATE = "CREATE" ;
+const char* Validator::_RUN = "RUN" ;
+const char* Validator::_HELP = "HELP" ;
+const char* Validator::_EXIT = "EXIT" ;
+
 void Validator::tokenize(const std::string& input, StrVector& tokens)
 {
 	std::stringstream	ss(input);
@@ -13,8 +19,7 @@ void Validator::tokenize(const std::string& input, StrVector& tokens)
 			continue;
 		tokens.push_back(tmp);
 	}	
-	if (tokens.size() < 3)
-		throw	std::invalid_argument("Not enough arguments");
+
 
 }
 
@@ -45,7 +50,7 @@ void	Validator::getOperandsFromTokens(StrVector& tokens, StrVector& operandVecto
 		}
 		if (std::next(it) == tokens.end())
 		{
-			throw	std::invalid_argument("Invalid place for option " + _OP);
+			throw	std::invalid_argument("Invalid place for option " + std::string(_OP));
 		}
 		operandVector.push_back(std::string(*std::next(it)));
 		tokens.erase(std::next(it));
@@ -83,11 +88,18 @@ void	Validator::validateOperands(const StrVector& operandVector, std::vector<dou
 void Validator::validateTokens(CommandInfo&	CommandInfo, StrVector& tokens, const CommandRegistry& registry)
 {
 	StrVector	operandVector;
+	if (tokens.size() < 3)
+		throw	std::invalid_argument("Not enough arguments");
 	validateCommand(tokens.front(), registry, CommandInfo.command);
 	getOperandsFromTokens(tokens, operandVector);
 	validateOperands(operandVector, CommandInfo.operands);
 }
 
-
-
+void	Validator::validateSingleCommand(const StrVector& tokens)
+{
+	if (!tokens.empty())
+	{
+		throw	std::invalid_argument("Single command error!");
+	}
+}
 
