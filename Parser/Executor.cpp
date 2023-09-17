@@ -1,6 +1,6 @@
 #include "Executor.hpp"
 
-void Executor::execute(CommandInfo commandInfo, CommandRegistry registry)
+void Executor::execute(CommandInfo commandInfo,   CommandRegistry& registry)
 {
 	double result = registry[commandInfo.command]->execute(commandInfo.operands);
 	results.push(result);

@@ -10,7 +10,7 @@ class CommandRegistry
 	public:
 		CommandRegistry();
 		~CommandRegistry();
-		Command* operator[](const std::string& target);
+		 Command* operator[](const std::string& target) ;
 		
 		bool					existsCommand(const std::string& command) const;
 	private:

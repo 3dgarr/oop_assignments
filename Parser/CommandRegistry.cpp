@@ -32,7 +32,7 @@ bool	CommandRegistry::existsCommand(const std::string& command) const
 	return it != cRegistry.cend();
 }
 
-Command* CommandRegistry::operator[](const std::string& target)
+ Command* CommandRegistry::operator[](const std::string& target) 
 {
 	return	cRegistry[target];
 }

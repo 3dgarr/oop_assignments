@@ -12,7 +12,7 @@ struct CommandInfo;
 class Executor
 {
 	public:
-		void execute(CommandInfo commandInfo, CommandRegistry registry);
+		void execute(CommandInfo commandInfo,  CommandRegistry& registry);
 	
 	private:
 		void printResult() const;

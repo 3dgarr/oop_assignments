@@ -2,7 +2,7 @@ CXX			= c++
 NAME		= parser
 SRCS		= $(wildcard *.cpp)
 OBJS		= $(SRCS:.cpp=.o)
-CXXFLAGS	= -Wall -Wextra -Werror -fsanitize=thread -g3 -std=c++17
+CXXFLAGS	= -Wall -Wextra -Werror -fsanitize=address -g -std=c++17
 
 %.o:%.cpp $(wildcard *.hpp)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
