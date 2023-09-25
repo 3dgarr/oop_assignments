@@ -11,30 +11,25 @@ void	Parser::run()
 			getInput();
 			Validator::tokenize(input, tokens);
 			determineModeOfCommand(tokens);
-
 			switch (commandInfo.mode)
 			{
 				case NORMAL:
 					Validator::validateTokens(commandInfo, tokens,  registry);
-					executor.execute(commandInfo, registry);
 					break;
 				case CREATE:
 					Validator::validateTokens(commandInfo, tokens,  registry);
-					executor.execute(commandInfo, registry);
 					break;
 				case RUN :
 					Validator::validateSingleCommand(tokens);
-					executor.execute(commandInfo, registry);
 					break;
 				case HELP :
 					Validator::validateSingleCommand(tokens);
-					executor.execute(commandInfo, registry);
 					break;
 				case EXIT :
 					Validator::validateSingleCommand(tokens);
-					executor.execute(commandInfo, registry);
 				break;
 			}
+			executor.execute(commandInfo, registry);
 		}
 		catch(const std::exception& e)
 		{

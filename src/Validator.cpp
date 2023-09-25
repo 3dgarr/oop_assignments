@@ -1,10 +1,10 @@
 #include	"Validator.hpp"
 
-const char* Validator::_OP = "-op" ;
-const char* Validator::_CREATE = "CREATE" ;
-const char* Validator::_RUN = "RUN" ;
-const char* Validator::_HELP = "HELP" ;
-const char* Validator::_EXIT = "EXIT" ;
+const char* Validator::_OP		= "-op" ;
+const char* Validator::_CREATE	= "CREATE" ;
+const char* Validator::_RUN		= "RUN" ;
+const char* Validator::_HELP	= "HELP" ;
+const char* Validator::_EXIT	= "EXIT" ;
 
 void Validator::tokenize(const std::string& input, StrVector& tokens)
 {
