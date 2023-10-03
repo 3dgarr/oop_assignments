@@ -3,15 +3,16 @@
 
 #include <vector>
 #include <string>
+#include <iostream>
 
-using Operands = std::vector<double>;
 
 class Command
 {
 	public:
 		Command(){};
 		
-		virtual	double execute(Operands operands)  = 0;
+		virtual	void execute()  = 0;
+		virtual	void process(std::vector<std::string> tokens)  = 0;
 		virtual ~Command(){};
 };
 
@@ -19,45 +20,82 @@ class Add
 	:	public	Command
 {
 	public:
-		double execute(Operands operands);
+		void execute(){};
+		void process(std::vector<std::string> tokens);
 		Add(){};
 		~Add(){};
 };
 
-class Sub
+class Remove
 	:	public Command
 {
 	public:
-		double execute(Operands operands);
-		Sub(){};
-		~Sub(){};
+		void process(std::vector<std::string> tokens);
+
+		void execute(){};
+		Remove(){};
+		~Remove(){};
 };
 
-class Mul
+class Display
 	: public Command
 {
 	public:
-		double execute(Operands operands);
-		Mul(){};
-		~Mul(){};
+		void process(std::vector<std::string> tokens);
+
+		void execute(){};
+		Display(){};
+		~Display(){};
 };
 
-class Div
+class ChangeId
 	: public Command
 {
 	public:
-		double execute(Operands operands);
-		Div(){};
-		~Div(){};
+		void process(std::vector<std::string> tokens);
+
+		void execute(){};
+		ChangeId(){};
+		~ChangeId(){};
 };
 
-class Help
+class List
 	:	public Command
 {
 	public:
-		double execute(Operands operands);
-		Help(){};
-		~Help(){};
+		void process(std::vector<std::string> tokens);
+		void execute(){};
+		List(){};
+		~List(){};
 };
 
+class Exit
+	:	public Command
+{
+	public:
+		void process(std::vector<std::string> tokens);
+		void execute(){};
+		Exit(){};
+		~Exit(){};
+};
+
+class Save
+	:	public Command
+{
+	public:
+		void process(std::vector<std::string> tokens);
+		void execute(){};
+		Save(){};
+		~Save(){};
+};
+
+class Load
+	:	public Command
+{
+	public:
+		void process(std::vector<std::string> tokens);
+		void execute(){};
+		Load(){};
+		~Load(){};
+};
 # endif //COMMAND_HPP

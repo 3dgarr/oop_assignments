@@ -6,7 +6,6 @@
 # include <vector>
 
 # include "CommandRegistry.hpp"
-# include "Executor.hpp"
 # include "Validator.hpp"
 # include "Utils.hpp"
 
@@ -25,14 +24,11 @@ class Parser
 		void getInput();
 		void printMsg(const std::string& msg, const std::string& color) const;
 		void clearContainers();
-		void determineModeOfCommand(StrVector&);
-
-
+		
 	private:
-		CommandInfo					commandInfo;
+		std::string					cmd;
 		std::string					input;
 		std::vector<std::string>	tokens;
-		Executor					executor;
 		CommandRegistry				registry;
 };
 

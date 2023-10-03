@@ -2,58 +2,52 @@
 #include <functional>
 #include <numeric>
 
-double	Add::execute(Operands operands)
-{
-	double result = operands.front();
-	operands.erase(operands.begin());
-	operands.shrink_to_fit();
-	for(auto operand : operands)
-	{
-		result += operand;
-	}
-	return result;
-}
 
-double	Sub::execute(Operands operands)
+void Add::process(std::vector<std::string> tokens)
 {
-	double result = operands.front();
-	operands.erase(operands.begin());
-	operands.shrink_to_fit();
-	for(auto operand : operands)
-	{
-		result -= operand;
-	}
-	return result;
-}
-
-double	Mul::execute(Operands operands)
-{
-	double result = operands.front();
-	operands.erase(operands.begin());
-	operands.shrink_to_fit();
-	for(auto operand : operands)
-	{
-		result *= operand;
-	}
-	return result;
-}
-
-double	Div::execute(Operands operands)
-{
-	double result = operands.front();
-	operands.erase(operands.begin());
-	operands.shrink_to_fit();
+	(void)tokens;
+	std::cout << __PRETTY_FUNCTION__ << std::endl;
+};
 	
-	for(auto operand : operands)
-	{
-		result /= operand;
-	}
-	return result;
-}
-
-double	Help::execute(Operands operands)
+void Remove::process(std::vector<std::string> tokens)
 {
-	(void) operands;
-	double res = 0;
-	return res;
-}
+	(void)tokens;
+	std::cout << __PRETTY_FUNCTION__ << std::endl;
+};
+
+void Display::process(std::vector<std::string> tokens)
+{
+	(void)tokens;
+	std::cout << __PRETTY_FUNCTION__ << std::endl;
+};
+
+void ChangeId::process(std::vector<std::string> tokens)
+{
+	(void)tokens;
+	std::cout << __PRETTY_FUNCTION__ << std::endl;
+};
+
+void List::process(std::vector<std::string> tokens)
+{
+	(void)tokens;
+	std::cout << __PRETTY_FUNCTION__ << std::endl;
+};
+
+void Exit::process(std::vector<std::string> tokens)
+{
+	(void)tokens;
+	std::cout << __PRETTY_FUNCTION__ << std::endl;
+};
+
+void Save::process(std::vector<std::string> tokens)
+{
+	(void)tokens;
+	std::cout << __PRETTY_FUNCTION__ << std::endl;
+};
+
+void Load::process(std::vector<std::string> tokens)
+{
+	(void)tokens;
+
+	std::cout << __PRETTY_FUNCTION__ << std::endl;
+};
