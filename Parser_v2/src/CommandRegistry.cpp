@@ -1,30 +1,39 @@
 #include "CommandRegistry.hpp"
-
+#include <iostream>
 CommandRegistry::CommandRegistry()
 {
-	cRegistry["ADD"] = new Add();
-	cRegistry["SUB"] = new Sub();
-	cRegistry["MUL"] = new Mul();
-	cRegistry["DIV"] = new Div();
-	cRegistry["HELP"] = new Help();
+	registry["Add"]			= std::make_shared<Add>();
+	registry["Remove"]		= std::make_shared<Remove>();
+	registry["Display"]		= std::make_shared<Display>();
+	registry["ChangeId"]	= std::make_shared<ChangeId>();
+	registry["List"]		= std::make_shared<List>();
+	registry["Exit"]		= std::make_shared<Exit>();
+	registry["Save"]		= std::make_shared<Save>();
+	registry["Load"]		= std::make_shared<Load>();
+
 }
 
 CommandRegistry::~CommandRegistry()
-{
-	for (auto command : cRegistry)
-	{
-		delete command.second;
-	}
-}
+{}
 
 bool	CommandRegistry::existsCommand(const std::string& command) const
 {
-	auto	it = cRegistry.find(command);
+	auto	it = registry.find(command);
 
-	return it != cRegistry.cend();
+	return it != registry.cend();
 }
 
- Command* CommandRegistry::operator[](const std::string& target) 
+ std::shared_ptr<Command>& CommandRegistry::operator[](const std::string& target) 
 {
-	return	cRegistry[target];
+	return	registry[target];
+}
+
+void CommandRegistry::printCommands()
+{
+
+	for(auto	it = registry.begin(); it != registry.end(); ++it)
+	{
+		std::cout << "|"<< it->first  << "| " << std::flush;
+	}
+	std::cout << "\n";
 }
