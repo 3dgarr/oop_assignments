@@ -12,13 +12,13 @@ class CommandRegistry
 	public:
 		CommandRegistry();
 		~CommandRegistry();
-		 std::shared_ptr<Command>& operator[](const std::string& target) ;
+		std::unique_ptr<Command>& operator[](const std::string& target) ;
 		void printCommands();
 		
 		bool	existsCommand(const std::string& command) const;
 		
 	private:
-		std::unordered_map<std::string, std::shared_ptr<Command> >	registry;
+		std::unordered_map<std::string, std::unique_ptr<Command> >	registry;
 };
 
 # endif //COMMAND_REGISTRY_HPP

@@ -11,8 +11,7 @@ void	Parser::run()
 			Validator::tokenize(input, tokens);
 			Validator::validateCommand(tokens.front(), registry, cmd);
 			registry.printCommands();
-			auto command = registry[cmd];
-			command->process(tokens);			
+			registry[cmd]->process(tokens);			
 		}
 		catch(const std::exception& e)
 		{
