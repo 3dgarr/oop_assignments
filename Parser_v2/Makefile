@@ -1,4 +1,4 @@
-NAME		= parser
+NAME		= application
 MODULES		= $(shell cd src && find * -type d)
 
 SDIR		= src/

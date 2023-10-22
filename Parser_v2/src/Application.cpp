@@ -1,6 +1,6 @@
-#include "Parser.hpp"
+#include "Application.hpp"
 
-void	Parser::run()
+int	Application::run()
 {
 	while (true)
 	{
@@ -9,26 +9,27 @@ void	Parser::run()
 		{
 			getInput();
 			Validator::tokenize(input, tokens);
+			// printMsg(tokens.front(), RED);
 			Validator::validateCommand(tokens.front(), registry, cmd);
 			registry.printCommands();
-			auto command = registry[cmd];
-			command->process(tokens);			
+			registry[cmd]->process(tokens);	
 		}
 		catch(const std::exception& e)
 		{
 			std::cerr << RED << e.what() <<  DEFAULT << std::endl;
 		}
 	}
+	return 0;
 }
 
-void Parser::clearContainers()
+void Application::clearContainers()
 {
 	tokens.clear();
 	tokens.shrink_to_fit();
 	cmd.clear();
 }
 
-void	Parser::getInput()
+void	Application::getInput()
 {
 	clearContainers();
 	printMsg("-> ", YELLOW);
@@ -37,7 +38,7 @@ void	Parser::getInput()
 		throw	std::invalid_argument("Empty expression");
 }
 
-void	Parser::printMsg(const std::string& msg, const std::string& color = DEFAULT) const
+void	Application::printMsg(const std::string& msg, const std::string& color = DEFAULT) const
 {
 	std::cout << color <<  msg << DEFAULT << std::flush;
 }

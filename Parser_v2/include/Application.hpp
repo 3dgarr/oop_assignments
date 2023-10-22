@@ -1,5 +1,5 @@
-# ifndef PARSER_HPP
-# define PARSER_HPP
+# ifndef APPLICATION_HPP
+# define APPLICATION_HPP
 
 # include <iostream>
 # include <exception>
@@ -11,14 +11,14 @@
 
 class Executor;
 
-class Parser
+class Application
 {
 	public:
-		void run();
+		int run();
 	
 	public:
-		Parser(){};
-		~Parser(){};
+		Application(){};
+		~Application(){};
 	
 	private:
 		void getInput();
@@ -33,4 +33,4 @@ class Parser
 };
 
 
-# endif// PARSER_HPP
+# endif// APPLICATION_HPP
