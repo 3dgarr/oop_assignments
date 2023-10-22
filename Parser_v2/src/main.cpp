@@ -1,9 +1,8 @@
-#include "Parser.hpp"
+#include "Application.hpp"
 
 int main()
 {
-	Parser	parser;
-	parser.run();
+	Application	app;
 
-	return 0;
+	return app.run();
 }
