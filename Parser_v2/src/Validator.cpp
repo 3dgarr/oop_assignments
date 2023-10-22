@@ -2,19 +2,22 @@
 
 void Validator::tokenize(const std::string& input, Tokens& tokens)
 {
+	if (isAllWhiteSpaces(input))
+		throw	std::invalid_argument("All space");
+
+
 	std::stringstream	ss(input);
 	if (ss.fail())
-		throw	std::invalid_argument("SStream failed");
+		throw	std::runtime_error("SStream failed");
 	
 	std::string	tmp;
 	while (std::getline(ss, tmp, ' '))
 	{
-		if (tmp.empty())
+		if (tmp.empty() || isAllWhiteSpaces(tmp))
 			continue;
 		tokens.push_back(tmp);
 	}	
 }
-
 
 void Validator::validateCommand(const std::string& target, const CommandRegistry& registry, std::string& command)
 {
@@ -23,11 +26,21 @@ void Validator::validateCommand(const std::string& target, const CommandRegistry
 	command = target;
 }
 
-void	Validator::getOperandsFromTokens(Tokens& tokens, Tokens& operandVector)
+bool Validator::isAllWhiteSpaces(const std::string& input)
 {
+	for (auto	element : input)
+	{
+		if (!std::isspace(element))
+			return false;
+	}
+	return true;
+}
 
-	(void) tokens;
-	(void) operandVector;
+// void	Validator::getOperandsFromTokens(Tokens& tokens, Tokens& operandVector)
+// {
+
+	// (void) tokens;
+	// (void) operandVector;
 	// tokens.erase(tokens.begin());
 	// tokens.shrink_to_fit();
 	// auto	begin = tokens.cbegin();
@@ -52,26 +65,24 @@ void	Validator::getOperandsFromTokens(Tokens& tokens, Tokens& operandVector)
 	// }
 	// if (!tokens.empty())
 	// 	throw	std::invalid_argument("Unknown token " + tokens.front());
+// }
 
-
-}
-
-void	Validator::validateOperands(const Tokens& operandVector, std::vector<double>& doubleOperandVector)
-{
-	double	temp = 0;
-	if (operandVector.size() < 2)
-		throw	std::invalid_argument("Not enough operands ");
-	for (auto element : operandVector)
-	{
-		try
-		{
-			temp = std::stod(element);
-		}
-		catch(const std::exception& e)
-		{
-			throw	std::invalid_argument("Invalid argument : " + element);
-		}
-		doubleOperandVector.push_back(temp);		
-	}
-}
+// void	Validator::validateOperands(const Tokens& operandVector, std::vector<double>& doubleOperandVector)
+// {
+// 	double	temp = 0;
+// 	if (operandVector.size() < 2)
+// 		throw	std::invalid_argument("Not enough operands ");
+// 	for (auto element : operandVector)
+// 	{
+// 		try
+// 		{
+// 			temp = std::stod(element);
+// 		}
+// 		catch(const std::exception& e)
+// 		{
+// 			throw	std::invalid_argument("Invalid argument : " + element);
+// 		}
+// 		doubleOperandVector.push_back(temp);		
+// 	}
+// }
 

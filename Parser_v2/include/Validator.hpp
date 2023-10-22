@@ -13,16 +13,13 @@
 
 
 using Tokens = std::vector<std::string>;
-struct CommandInfo;
 
 class Validator
 {
 	public:
 		static void	tokenize(const std::string& input, Tokens& tokens);
-		static void validateTokens(Tokens& tokens, const CommandRegistry& registry);
 		static void	validateCommand(const std::string& target, const CommandRegistry& registry, std::string& command);
-		static void getOperandsFromTokens(Tokens& arguments, Tokens& operandVector);
-		static void validateOperands(const Tokens& operandVector, std::vector<double>& doubleOperandVector);
+		static bool isAllWhiteSpaces(const std::string& input);
 };
 
 # endif// VALIDATIOR_HPP

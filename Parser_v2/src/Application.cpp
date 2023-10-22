@@ -9,6 +9,7 @@ int	Application::run()
 		{
 			getInput();
 			Validator::tokenize(input, tokens);
+			// printMsg(tokens.front(), RED);
 			Validator::validateCommand(tokens.front(), registry, cmd);
 			registry.printCommands();
 			registry[cmd]->process(tokens);	
