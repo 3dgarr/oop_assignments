@@ -1,5 +1,6 @@
 #include "CommandRegistry.hpp"
 #include <iostream>
+
 CommandRegistry::CommandRegistry()
 {
 	registry["Add"]			= std::make_unique<Add>();

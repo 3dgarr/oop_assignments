@@ -5,20 +5,27 @@
 #include <string>
 #include <iostream>
 #include <map>
+#include "ItemRegistry.hpp"
 
 
 class Command
 {
 	public:
 		Command() = default;
+		virtual ~Command() = default;
 		
 		virtual	void execute()  = 0;
-		virtual	void process(std::vector<std::string> tokens)  = 0;
-		virtual ~Command() = default;
+		virtual	void process(std::vector<std::string> tokens) = 0;
+
+		virtual	void getOptions(std::vector<std::string>& tokens);
+		virtual	void printOptValues() const;
+		
 
 	protected:
 		std::vector<std::string>			options;
 		std::map<std::string, std::string>	option_values;
+		ItemRegistry						itemReg;
+
 };
 
 class Add
@@ -27,12 +34,13 @@ class Add
 	public:
 		void execute(){};
 		void process(std::vector<std::string> tokens);
+
 		Add();
 		~Add() = default;
 	private:
 		void getNameOfItem(std::vector<std::string>& tokens);
-		void getOptions(std::vector<std::string>& tokens);
 
+		std::string	nameOfItem;
 };
 
 class Remove
@@ -53,7 +61,7 @@ class Display
 		void process(std::vector<std::string> tokens);
 
 		void execute(){};
-		Display(){};
+		Display();
 		~Display() = default;
 };
 

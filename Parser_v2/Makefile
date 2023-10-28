@@ -1,6 +1,8 @@
 NAME		= application
 MODULES		= $(shell cd src && find * -type d)
 
+CXX			= c++
+
 SDIR		= src/
 INCDIR		= include/
 OBJDIR		= obj/

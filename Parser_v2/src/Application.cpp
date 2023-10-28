@@ -10,7 +10,7 @@ int	Application::run()
 			getInput();
 			Validator::tokenize(input, tokens);
 			Validator::validateCommand(tokens.front(), registry, cmd);
-			registry.printCommands();
+			// registry.printCommands();
 			registry[cmd]->process(tokens);	
 		}
 		catch(const std::exception& e)
