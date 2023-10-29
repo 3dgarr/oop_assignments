@@ -6,6 +6,7 @@
 #include <iostream>
 #include <map>
 #include "ItemRegistry.hpp"
+#include "Storage.hpp"
 
 
 class Command
@@ -17,6 +18,7 @@ class Command
 		virtual	void execute()  = 0;
 		virtual	void process(std::vector<std::string> tokens) = 0;
 
+
 		virtual	void getOptions(std::vector<std::string>& tokens);
 		virtual	void printOptValues() const;
 		
@@ -25,6 +27,8 @@ class Command
 		std::vector<std::string>			options;
 		std::map<std::string, std::string>	option_values;
 		ItemRegistry						itemReg;
+		Storage								itemStorage;
+		
 
 };
 

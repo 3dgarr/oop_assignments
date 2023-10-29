@@ -1,6 +1,9 @@
 #include "Commands.hpp"
 #include <iterator>
 #include <algorithm>
+#include <typeinfo>
+#include <iostream>
+
 
 void Command::getOptions(std::vector<std::string>& tokens)
 {
@@ -60,6 +63,16 @@ void Add::process(std::vector<std::string> tokens)
 		throw std::invalid_argument("Unknown item to add");
 	}
 	getOptions(tokens);
+
+	
+	std::unique_ptr<Item> item = itemReg.getNewItem(nameOfItem);
+
+	std::cout << "ITEM IS -> " << item->getType() << std::endl;
+	itemStorage.addItem(std::move(item));
+
+	// std::cout << "SIZE IS -> " << itemStorage.size() << std::endl;
+
+
 
 
 
