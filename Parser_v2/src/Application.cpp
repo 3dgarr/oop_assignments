@@ -12,6 +12,7 @@ int	Application::run()
 			Validator::validateCommand(tokens.front(), registry, cmd);
 			// registry.printCommands();
 			registry[cmd]->process(tokens);	
+			registry[cmd]->execute(storage);
 		}
 		catch(const std::exception& e)
 		{

@@ -6,7 +6,7 @@ CommandRegistry::CommandRegistry()
 	registry["Add"]			= std::make_unique<Add>();
 	registry["Remove"]		= std::make_unique<Remove>();
 	registry["Display"]		= std::make_unique<Display>();
-	registry["ChangeId"]	= std::make_unique<ChangeId>();
+	registry["Change"]	= std::make_unique<Change>();
 	registry["List"]		= std::make_unique<List>();
 	registry["Exit"]		= std::make_unique<Exit>();
 	registry["Save"]		= std::make_unique<Save>();

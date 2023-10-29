@@ -48,6 +48,7 @@ Add::Add()
 	options = {"-x1", "-x2", "-y1", "-y2"};
 };
 
+
 void Add::process(std::vector<std::string> tokens)
 {
 	option_values.clear();
@@ -64,20 +65,20 @@ void Add::process(std::vector<std::string> tokens)
 	}
 	getOptions(tokens);
 
-	
-	std::unique_ptr<Item> item = itemReg.getNewItem(nameOfItem);
-
-	std::cout << "ITEM IS -> " << item->getType() << std::endl;
-	itemStorage.addItem(std::move(item));
-
-	// std::cout << "SIZE IS -> " << itemStorage.size() << std::endl;
-
-
-
-
+	item = itemReg.getNewItem(nameOfItem);
 
 	printOptValues();
 }
+
+void Add::execute(Storage &storage)
+{
+	std::cout <<__PRETTY_FUNCTION__ << std::endl;
+	std::cout << "ITEM IS -> " << item->getType() << std::endl;
+	storage.addItem(std::move(item));
+	std::cout << "SIZE IS -> " << storage.size() << std::endl;
+
+}
+
 
 void Add::getNameOfItem(std::vector<std::string>& tokens)
 {
@@ -96,9 +97,19 @@ void Add::getNameOfItem(std::vector<std::string>& tokens)
 	tokens.shrink_to_fit();
 }
 
+
+// --REMOVE
+// -----------------------------------------------------------------
 Remove::Remove()
 {
 	options = {"-id"};
+}
+
+
+void Remove::execute(Storage &storage)
+{
+	(void)storage;
+	std::cout <<__PRETTY_FUNCTION__ << std::endl;
 }
 
 void Remove::process(std::vector<std::string> tokens)
@@ -115,28 +126,22 @@ void Remove::process(std::vector<std::string> tokens)
 
 	printOptValues();
 };
+// -----------------------------------------------------------------
 
-Save::Save()
-{
-	options = {"-file"};
-}
 
-Load::Load()
+// --DISPLAY
+// -----------------------------------------------------------------
+
+void Display::execute(Storage &storage)
 {
-	options = {"-file"};
+	(void)storage;
+	std::cout <<__PRETTY_FUNCTION__ << std::endl;
 }
 
 Display::Display()
 {
 	options = {"-id"};
 }
-
-
-ChangeId::ChangeId()
-{
-	options = {"-name", "-x1", "-x2", "-y1", "-y2", "-id"};
-}
-
 
 void Display::process(std::vector<std::string> tokens)
 {
@@ -151,7 +156,11 @@ void Display::process(std::vector<std::string> tokens)
 	printOptValues();
 };
 
-void ChangeId::process(std::vector<std::string> tokens)
+// -----------------------------------------------------------------
+// --CHANGE
+// -----------------------------------------------------------------
+
+void Change::process(std::vector<std::string> tokens)
 {
 	option_values.clear();
 	tokens.erase(tokens.begin());
@@ -162,9 +171,24 @@ void ChangeId::process(std::vector<std::string> tokens)
 	}
 	getOptions(tokens);
 	printOptValues();
-
-
 };
+
+void Change::execute(Storage &storage)
+{
+	(void)storage;
+	std::cout <<__PRETTY_FUNCTION__ << std::endl;
+}
+
+Change::Change()
+{
+	options = {"-name", "-x1", "-x2", "-y1", "-y2", "-id"};
+}
+
+// -----------------------------------------------------------------
+
+
+//---LIST
+// -----------------------------------------------------------------
 
 void List::process(std::vector<std::string> tokens)
 {
@@ -178,7 +202,18 @@ void List::process(std::vector<std::string> tokens)
 	getOptions(tokens);
 	printOptValues();
 
+}
+void List::execute(Storage &storage)
+{
+	(void)storage;
+	std::cout <<__PRETTY_FUNCTION__ << std::endl;
+
 };
+// -----------------------------------------------------------------
+
+
+//---EXIT--
+// -----------------------------------------------------------------
 
 void Exit::process(std::vector<std::string> tokens)
 {
@@ -190,7 +225,24 @@ void Exit::process(std::vector<std::string> tokens)
 // 	{
 // 		throw std::invalid_argument("Not enough arguments for command");
 // 	}
+}
+void Exit::execute(Storage &storage)
+{
+	(void)storage;
+	std::cout <<__PRETTY_FUNCTION__ << std::endl;
+
 };
+
+// -----------------------------------------------------------------
+
+//---SAVE--
+// -----------------------------------------------------------------
+
+
+Save::Save()
+{
+	options = {"-file"};
+}
 
 void Save::process(std::vector<std::string> tokens)
 {
@@ -204,7 +256,21 @@ void Save::process(std::vector<std::string> tokens)
 	getOptions(tokens);
 	printOptValues();
 
+}
+void Save::execute(Storage &storage)
+{
+	(void)storage;
+	std::cout <<__PRETTY_FUNCTION__ << std::endl;
+
 };
+// -----------------------------------------------------------------
+
+//---LOAD--
+
+Load::Load()
+{
+	options = {"-file"};
+}
 
 void Load::process(std::vector<std::string> tokens)
 {
@@ -218,4 +284,12 @@ void Load::process(std::vector<std::string> tokens)
 	getOptions(tokens);
 	printOptValues();
 
+}
+void Load::execute(Storage &storage)
+{
+	(void)storage;
+	std::cout <<__PRETTY_FUNCTION__ << std::endl;
+
 };
+
+// -----------------------------------------------------------------

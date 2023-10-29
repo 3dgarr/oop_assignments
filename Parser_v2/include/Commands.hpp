@@ -15,7 +15,7 @@ class Command
 		Command() = default;
 		virtual ~Command() = default;
 		
-		virtual	void execute()  = 0;
+		virtual	void execute(Storage& storage)  = 0;
 		virtual	void process(std::vector<std::string> tokens) = 0;
 
 
@@ -27,16 +27,13 @@ class Command
 		std::vector<std::string>			options;
 		std::map<std::string, std::string>	option_values;
 		ItemRegistry						itemReg;
-		Storage								itemStorage;
-		
-
 };
 
 class Add
 	:	public	Command
 {
 	public:
-		void execute(){};
+		void execute(Storage& storage);
 		void process(std::vector<std::string> tokens);
 
 		Add();
@@ -44,7 +41,8 @@ class Add
 	private:
 		void getNameOfItem(std::vector<std::string>& tokens);
 
-		std::string	nameOfItem;
+		std::string				nameOfItem;
+		std::unique_ptr<Item>	item;
 };
 
 class Remove
@@ -53,7 +51,7 @@ class Remove
 	public:
 		void process(std::vector<std::string> tokens);
 
-		void execute(){};
+		void execute(Storage& storage);
 		Remove();
 		~Remove() = default;
 };
@@ -64,20 +62,20 @@ class Display
 	public:
 		void process(std::vector<std::string> tokens);
 
-		void execute(){};
+		void execute(Storage& storage);
 		Display();
 		~Display() = default;
 };
 
-class ChangeId
+class Change
 	: public Command
 {
 	public:
 		void process(std::vector<std::string> tokens);
 
-		void execute(){};
-		ChangeId();
-		~ChangeId() = default;
+		void execute(Storage& storage);
+		Change();
+		~Change() = default;
 };
 
 class List
@@ -85,7 +83,7 @@ class List
 {
 	public:
 		void process(std::vector<std::string> tokens);
-		void execute(){};
+		void execute(Storage& storage);
 		List(){};
 		~List() = default;
 };
@@ -95,7 +93,7 @@ class Exit
 {
 	public:
 		void process(std::vector<std::string> tokens);
-		void execute(){};
+		void execute(Storage& storage);
 		Exit(){};
 		~Exit() = default;
 };
@@ -105,7 +103,7 @@ class Save
 {
 	public:
 		void process(std::vector<std::string> tokens);
-		void execute(){};
+		void execute(Storage& storage);
 		Save();
 		~Save() = default;
 };
@@ -115,7 +113,7 @@ class Load
 {
 	public:
 		void process(std::vector<std::string> tokens);
-		void execute(){};
+		void execute(Storage& storage);
 		Load();
 		~Load() = default;
 };

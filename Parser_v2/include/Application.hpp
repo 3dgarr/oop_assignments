@@ -6,6 +6,7 @@
 # include <vector>
 
 # include "CommandRegistry.hpp"
+# include "Storage.hpp"
 # include "Validator.hpp"
 # include "Utils.hpp"
 
@@ -28,6 +29,8 @@ class Application
 		std::string					input;
 		std::vector<std::string>	tokens;
 		CommandRegistry				registry;
+		Storage						storage;
+		
 };
 
 
