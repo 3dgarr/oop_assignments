@@ -9,8 +9,6 @@
 # include "Validator.hpp"
 # include "Utils.hpp"
 
-class Executor;
-
 class Application
 {
 	public:

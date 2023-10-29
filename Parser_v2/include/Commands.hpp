@@ -4,16 +4,28 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <map>
+#include "ItemRegistry.hpp"
 
 
 class Command
 {
 	public:
-		Command(){};
+		Command() = default;
+		virtual ~Command() = default;
 		
 		virtual	void execute()  = 0;
-		virtual	void process(std::vector<std::string> tokens)  = 0;
-		virtual ~Command(){};
+		virtual	void process(std::vector<std::string> tokens) = 0;
+
+		virtual	void getOptions(std::vector<std::string>& tokens);
+		virtual	void printOptValues() const;
+		
+
+	protected:
+		std::vector<std::string>			options;
+		std::map<std::string, std::string>	option_values;
+		ItemRegistry						itemReg;
+
 };
 
 class Add
@@ -22,8 +34,13 @@ class Add
 	public:
 		void execute(){};
 		void process(std::vector<std::string> tokens);
-		Add(){};
-		~Add(){};
+
+		Add();
+		~Add() = default;
+	private:
+		void getNameOfItem(std::vector<std::string>& tokens);
+
+		std::string	nameOfItem;
 };
 
 class Remove
@@ -33,8 +50,8 @@ class Remove
 		void process(std::vector<std::string> tokens);
 
 		void execute(){};
-		Remove(){};
-		~Remove(){};
+		Remove();
+		~Remove() = default;
 };
 
 class Display
@@ -44,8 +61,8 @@ class Display
 		void process(std::vector<std::string> tokens);
 
 		void execute(){};
-		Display(){};
-		~Display(){};
+		Display();
+		~Display() = default;
 };
 
 class ChangeId
@@ -55,8 +72,8 @@ class ChangeId
 		void process(std::vector<std::string> tokens);
 
 		void execute(){};
-		ChangeId(){};
-		~ChangeId(){};
+		ChangeId();
+		~ChangeId() = default;
 };
 
 class List
@@ -66,7 +83,7 @@ class List
 		void process(std::vector<std::string> tokens);
 		void execute(){};
 		List(){};
-		~List(){};
+		~List() = default;
 };
 
 class Exit
@@ -76,7 +93,7 @@ class Exit
 		void process(std::vector<std::string> tokens);
 		void execute(){};
 		Exit(){};
-		~Exit(){};
+		~Exit() = default;
 };
 
 class Save
@@ -85,8 +102,8 @@ class Save
 	public:
 		void process(std::vector<std::string> tokens);
 		void execute(){};
-		Save(){};
-		~Save(){};
+		Save();
+		~Save() = default;
 };
 
 class Load
@@ -95,7 +112,7 @@ class Load
 	public:
 		void process(std::vector<std::string> tokens);
 		void execute(){};
-		Load(){};
-		~Load(){};
+		Load();
+		~Load() = default;
 };
 # endif //COMMAND_HPP

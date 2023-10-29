@@ -1,11 +1,13 @@
 NAME		= application
 MODULES		= $(shell cd src && find * -type d)
 
+CXX			= c++
+
 SDIR		= src/
 INCDIR		= include/
 OBJDIR		= obj/
 
-CXXFLAGS	= -Wall -Wextra -Werror -g3 -std=c++17 -I $(INCDIR)  -fsanitize=address 
+CXXFLAGS	= -Wall -Wextra -g3 -std=c++17 -I $(INCDIR)  -fsanitize=address  #-Werror
 
 SRCS		= $(wildcard src/*.cpp)
 TEMP		= $(SRCS:.cpp=.o)
