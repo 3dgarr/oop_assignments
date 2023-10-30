@@ -21,9 +21,15 @@ void Validator::tokenize(const std::string& input, Tokens& tokens)
 
 void Validator::validateCommand(const std::string& target, const CommandRegistry& registry, std::string& command)
 {
-	if (!registry.existsCommand(target))
+	std::string tempCmd = target;
+	std::transform(tempCmd.begin(), tempCmd.end(), tempCmd.begin(), 
+				[](unsigned char c)
+				{ 
+					return std::tolower(c); 
+				});
+	if (!registry.existsCommand(tempCmd))
 		throw	std::invalid_argument("Wrong Command !");
-	command = target;
+	command = tempCmd;
 }
 
 bool Validator::isAllWhiteSpaces(const std::string& input)

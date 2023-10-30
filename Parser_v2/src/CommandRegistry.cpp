@@ -3,14 +3,14 @@
 
 CommandRegistry::CommandRegistry()
 {
-	registry["Add"]			= std::make_unique<Add>();
-	registry["Remove"]		= std::make_unique<Remove>();
-	registry["Display"]		= std::make_unique<Display>();
-	registry["Change"]	= std::make_unique<Change>();
-	registry["List"]		= std::make_unique<List>();
-	registry["Exit"]		= std::make_unique<Exit>();
-	registry["Save"]		= std::make_unique<Save>();
-	registry["Load"]		= std::make_unique<Load>();
+	registry["add"]		= std::make_unique<Add>();
+	registry["remove"]	= std::make_unique<Remove>();
+	registry["display"]	= std::make_unique<Display>();
+	registry["change"]	= std::make_unique<Change>();
+	registry["list"]	= std::make_unique<List>();
+	registry["exit"]	= std::make_unique<Exit>();
+	registry["save"]	= std::make_unique<Save>();
+	registry["load"]	= std::make_unique<Load>();
 
 }
 

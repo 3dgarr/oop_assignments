@@ -21,6 +21,16 @@ class Command
 
 		virtual	void getOptions(std::vector<std::string>& tokens);
 		virtual	void printOptValues() const;
+		virtual	std::string stringToLower(std::string s);
+		// {
+		// 	std::transform(s.begin(), s.end(), s.begin(), 
+		// 				// static_cast<int(*)(int)>(std::tolower)         // wrong
+		// 				// [](int c){ return std::tolower(c); }           // wrong
+		// 				// [](char c){ return std::tolower(c); }          // wrong
+		// 				[](unsigned char c){ return std::tolower(c); } // correct
+		// 				);
+		// 	return s;
+		// }
 		
 
 	protected:
@@ -38,6 +48,7 @@ class Add
 
 		Add();
 		~Add() = default;
+
 	private:
 		void getNameOfItem(std::vector<std::string>& tokens);
 

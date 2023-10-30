@@ -4,6 +4,8 @@
 #include <typeinfo>
 #include <iostream>
 
+// --COMMAND
+// -----------------------------------------------------------------
 
 void Command::getOptions(std::vector<std::string>& tokens)
 {
@@ -42,6 +44,18 @@ void Command::printOptValues() const
 	std::cout << std::endl;
 }
 
+std::string Command::stringToLower(std::string s)
+{
+	std::transform(s.begin(), s.end(), s.begin(), 
+				[](unsigned char c)
+				{
+					return std::tolower(c); 
+				});
+	return s;
+}
+
+// --ADD
+// -----------------------------------------------------------------
 
 Add::Add()
 {
