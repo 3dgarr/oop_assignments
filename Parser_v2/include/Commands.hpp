@@ -7,6 +7,7 @@
 #include <map>
 #include "ItemRegistry.hpp"
 #include "Storage.hpp"
+#include "Utils.hpp"
 
 
 class Command
@@ -65,6 +66,8 @@ class Remove
 		void execute(Storage& storage);
 		Remove();
 		~Remove() = default;
+	private:
+		int	id;
 };
 
 class Display

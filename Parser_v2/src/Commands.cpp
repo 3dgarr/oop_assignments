@@ -81,16 +81,16 @@ void Add::process(std::vector<std::string> tokens)
 
 	item = itemReg.getNewItem(nameOfItem);
 
-	printOptValues();
+	// printOptValues();
 }
 
 void Add::execute(Storage &storage)
 {
-	std::cout <<__PRETTY_FUNCTION__ << std::endl;
-	std::cout << "ITEM IS -> " << item->getType() << std::endl;
+	// std::cout <<__PRETTY_FUNCTION__ << std::endl;
+	// std::cout << "ITEM IS -> " << item->getType() << std::endl;
+	// std::cout << "SIZE IS -> " << storage.size() << std::endl;
 	storage.addItem(std::move(item));
-	std::cout << "SIZE IS -> " << storage.size() << std::endl;
-
+	std::cout  << GREEN << "Item added succesfully" << DEFAULT << std::endl;
 }
 
 
@@ -117,13 +117,20 @@ void Add::getNameOfItem(std::vector<std::string>& tokens)
 Remove::Remove()
 {
 	options = {"-id"};
+	id = -1;
 }
 
 
 void Remove::execute(Storage &storage)
 {
-	(void)storage;
-	std::cout <<__PRETTY_FUNCTION__ << std::endl;
+	size_t	index = id;
+	if (index >= storage.size())
+	{
+		throw std::invalid_argument("Out of range value: " + option_values["-id"]);
+	}
+	storage.removeItem(index);
+	std::cout  << GREEN << "Item removed succesfully" << DEFAULT << std::endl;
+	// std::cout <<__PRETTY_FUNCTION__ << std::endl;
 }
 
 void Remove::process(std::vector<std::string> tokens)
@@ -131,14 +138,25 @@ void Remove::process(std::vector<std::string> tokens)
 	option_values.clear();
 	tokens.erase(tokens.begin());
 	tokens.shrink_to_fit();
+	
 	if (tokens.empty())
 	{
 		throw std::invalid_argument("Not enough arguments for command");
 	}
-
 	getOptions(tokens);
 
-	printOptValues();
+	try
+	{
+		///TODO: need to empower this part, 12t is valid, t12 is not
+		id = std::stoi(option_values["-id"]);
+		if (id < 0)
+			throw (std::exception{});
+	}
+	catch(const std::exception& e)
+	{
+		throw std::invalid_argument("Invalid value: " + option_values["-id"]);
+	}
+	// printOptValues();
 };
 // -----------------------------------------------------------------
 
@@ -227,6 +245,7 @@ void List::execute(Storage &storage)
 	size_t	index = 0;
 	Storage::iterator it = storage.begin();
 	Storage::iterator end = storage.end();
+
 	if (std::distance(it, end) == 0)
 	{
 		std::cout << "Empty storage" << std::endl;
@@ -235,7 +254,7 @@ void List::execute(Storage &storage)
 
 	for (Storage::iterator it = storage.begin(); it != storage.end(); ++it)
 	{
-		std::cout << ++index << ": " << it->get()->getType() << std::endl;
+		std::cout << index++ << ": " << it->get()->getType() << std::endl;
 		
 	}
 	

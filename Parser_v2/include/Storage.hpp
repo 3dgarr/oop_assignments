@@ -20,11 +20,13 @@ class Storage
 		iterator		end();
 		const_iterator	cbegin();
 		const_iterator	cend();
+		// std::unique_ptr<Item>	operator[](int);
 		
 
 	
 	public:
 		void	addItem(std::unique_ptr<Item>);
+		void	removeItem(size_t);
 
 		size_t	size() const;
 

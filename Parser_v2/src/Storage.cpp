@@ -6,6 +6,12 @@ void Storage::addItem(std::unique_ptr<Item> newItem)
 
 }
 
+void Storage::removeItem(size_t index)
+{
+	items.erase(std::next(items.begin(), index));
+	items.shrink_to_fit();
+}
+
 size_t Storage::size() const
 {
 	return items.size();
