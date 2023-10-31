@@ -95,7 +95,7 @@ class List
 	public:
 		void process(std::vector<std::string> tokens);
 		void execute(Storage& storage);
-		List(){};
+		List();
 		~List() = default;
 };
 

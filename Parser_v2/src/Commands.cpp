@@ -203,26 +203,45 @@ Change::Change()
 
 //---LIST
 // -----------------------------------------------------------------
+List::List()
+{
+
+};
 
 void List::process(std::vector<std::string> tokens)
 {
-	option_values.clear();
+	// option_values.clear();
 	tokens.erase(tokens.begin());
 	tokens.shrink_to_fit();
-	// if (tokens.empty())
-	// {
-	// 	throw std::invalid_argument("Not enough arguments for command");
-	// }
-	getOptions(tokens);
-	printOptValues();
+	if (!tokens.empty())
+	{
+		throw std::invalid_argument("List has no any options!");
+	}
+	// getOptions(tokens);
+	// printOptValues();
 
 }
+
 void List::execute(Storage &storage)
 {
-	(void)storage;
-	std::cout <<__PRETTY_FUNCTION__ << std::endl;
+	size_t	index = 0;
+	Storage::iterator it = storage.begin();
+	Storage::iterator end = storage.end();
+	if (std::distance(it, end) == 0)
+	{
+		std::cout << "Empty storage" << std::endl;
+		return;
+	}
 
-};
+	for (Storage::iterator it = storage.begin(); it != storage.end(); ++it)
+	{
+		std::cout << ++index << ": " << it->get()->getType() << std::endl;
+		
+	}
+	
+	// std::cout <<__PRETTY_FUNCTION__ << std::endl;
+
+}
 // -----------------------------------------------------------------
 
 
