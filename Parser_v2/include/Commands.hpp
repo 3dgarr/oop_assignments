@@ -6,6 +6,9 @@
 #include <iostream>
 #include <map>
 #include "ItemRegistry.hpp"
+#include "Slide.hpp"
+#include "Utils.hpp"
+#include "Document.hpp"
 
 
 class Command
@@ -14,33 +17,45 @@ class Command
 		Command() = default;
 		virtual ~Command() = default;
 		
-		virtual	void execute()  = 0;
+		virtual	void execute(Document& slide)  = 0;
 		virtual	void process(std::vector<std::string> tokens) = 0;
+
 
 		virtual	void getOptions(std::vector<std::string>& tokens);
 		virtual	void printOptValues() const;
+		virtual	std::string stringToLower(std::string s);
+		// {
+		// 	std::transform(s.begin(), s.end(), s.begin(), 
+		// 				// static_cast<int(*)(int)>(std::tolower)         // wrong
+		// 				// [](int c){ return std::tolower(c); }           // wrong
+		// 				// [](char c){ return std::tolower(c); }          // wrong
+		// 				[](unsigned char c){ return std::tolower(c); } // correct
+		// 				);
+		// 	return s;
+		// }
 		
 
 	protected:
 		std::vector<std::string>			options;
 		std::map<std::string, std::string>	option_values;
 		ItemRegistry						itemReg;
-
 };
 
 class Add
 	:	public	Command
 {
 	public:
-		void execute(){};
+		void execute(Document& slide);
 		void process(std::vector<std::string> tokens);
 
 		Add();
 		~Add() = default;
+
 	private:
 		void getNameOfItem(std::vector<std::string>& tokens);
 
-		std::string	nameOfItem;
+		std::string				nameOfItem;
+		std::unique_ptr<Item>	item;
 };
 
 class Remove
@@ -49,9 +64,11 @@ class Remove
 	public:
 		void process(std::vector<std::string> tokens);
 
-		void execute(){};
+		void execute(Document& slide);
 		Remove();
 		~Remove() = default;
+	private:
+		int	id;
 };
 
 class Display
@@ -60,20 +77,20 @@ class Display
 	public:
 		void process(std::vector<std::string> tokens);
 
-		void execute(){};
+		void execute(Document& slide);
 		Display();
 		~Display() = default;
 };
 
-class ChangeId
+class Change
 	: public Command
 {
 	public:
 		void process(std::vector<std::string> tokens);
 
-		void execute(){};
-		ChangeId();
-		~ChangeId() = default;
+		void execute(Document& slide);
+		Change();
+		~Change() = default;
 };
 
 class List
@@ -81,8 +98,8 @@ class List
 {
 	public:
 		void process(std::vector<std::string> tokens);
-		void execute(){};
-		List(){};
+		void execute(Document& slide);
+		List();
 		~List() = default;
 };
 
@@ -91,7 +108,7 @@ class Exit
 {
 	public:
 		void process(std::vector<std::string> tokens);
-		void execute(){};
+		void execute(Document& slide);
 		Exit(){};
 		~Exit() = default;
 };
@@ -101,7 +118,7 @@ class Save
 {
 	public:
 		void process(std::vector<std::string> tokens);
-		void execute(){};
+		void execute(Document& slide);
 		Save();
 		~Save() = default;
 };
@@ -111,7 +128,7 @@ class Load
 {
 	public:
 		void process(std::vector<std::string> tokens);
-		void execute(){};
+		void execute(Document& slide);
 		Load();
 		~Load() = default;
 };

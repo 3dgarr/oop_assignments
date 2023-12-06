@@ -11,7 +11,7 @@ class ItemRegistry
 	public:
 		ItemRegistry();
 		bool existsItem(const std::string& itemType);
-		std::unique_ptr<Item>	getNewItem(std::string itemType);
+		std::unique_ptr<Item>	getNewItem(const std::string& itemType);
 
 		~ItemRegistry() = default;
 

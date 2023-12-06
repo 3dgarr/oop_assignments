@@ -1,6 +1,11 @@
 #include "Commands.hpp"
 #include <iterator>
 #include <algorithm>
+#include <typeinfo>
+#include <iostream>
+
+// --COMMAND
+// -----------------------------------------------------------------
 
 void Command::getOptions(std::vector<std::string>& tokens)
 {
@@ -39,11 +44,24 @@ void Command::printOptValues() const
 	std::cout << std::endl;
 }
 
+std::string Command::stringToLower(std::string s)
+{
+	std::transform(s.begin(), s.end(), s.begin(), 
+				[](unsigned char c)
+				{
+					return std::tolower(c); 
+				});
+	return s;
+}
+
+// --ADD
+// -----------------------------------------------------------------
 
 Add::Add()
 {
 	options = {"-x1", "-x2", "-y1", "-y2"};
 };
+
 
 void Add::process(std::vector<std::string> tokens)
 {
@@ -61,10 +79,21 @@ void Add::process(std::vector<std::string> tokens)
 	}
 	getOptions(tokens);
 
+	item = itemReg.getNewItem(nameOfItem);
 
-
-	printOptValues();
+	// printOptValues();
 }
+
+void Add::execute(Document &document)
+{
+	// std::cout <<__PRETTY_FUNCTION__ << std::endl;
+	// std::cout << "ITEM IS -> " << item->getType() << std::endl;
+	// std::cout << "SIZE IS -> " << document.size() << std::endl;
+	// document.addItem(std::move(item));
+	document.addToCurrentSlide(std::move(item));
+	std::cout  << GREEN << "Item added succesfully" << DEFAULT << std::endl;
+}
+
 
 void Add::getNameOfItem(std::vector<std::string>& tokens)
 {
@@ -83,9 +112,27 @@ void Add::getNameOfItem(std::vector<std::string>& tokens)
 	tokens.shrink_to_fit();
 }
 
+
+// --REMOVE
+// -----------------------------------------------------------------
 Remove::Remove()
 {
 	options = {"-id"};
+	id = -1;
+}
+
+
+void Remove::execute(Document &document)
+{
+	size_t	index = id;
+	if (index >= document.currentSlideSize())
+	{
+		throw std::invalid_argument("Out of range value: " + option_values["-id"]);
+	}
+	// document.removeItem(index);
+	document.removeItemFromCurrentSlide(index);
+	std::cout  << GREEN << "Item removed succesfully" << DEFAULT << std::endl;
+	// std::cout <<__PRETTY_FUNCTION__ << std::endl;
 }
 
 void Remove::process(std::vector<std::string> tokens)
@@ -93,37 +140,42 @@ void Remove::process(std::vector<std::string> tokens)
 	option_values.clear();
 	tokens.erase(tokens.begin());
 	tokens.shrink_to_fit();
+	
 	if (tokens.empty())
 	{
 		throw std::invalid_argument("Not enough arguments for command");
 	}
-
 	getOptions(tokens);
 
-	printOptValues();
+	try
+	{
+		///TODO: need to empower this part, 12t is valid, t12 is not
+		id = std::stoi(option_values["-id"]);
+		if (id < 0)
+			throw (std::exception{});
+	}
+	catch(const std::exception& e)
+	{
+		throw std::invalid_argument("Invalid value: " + option_values["-id"]);
+	}
+	// printOptValues();
 };
+// -----------------------------------------------------------------
 
-Save::Save()
-{
-	options = {"-file"};
-}
 
-Load::Load()
+// --DISPLAY
+// -----------------------------------------------------------------
+
+void Display::execute(Document &document)
 {
-	options = {"-file"};
+	(void)document;
+	std::cout <<__PRETTY_FUNCTION__ << std::endl;
 }
 
 Display::Display()
 {
 	options = {"-id"};
 }
-
-
-ChangeId::ChangeId()
-{
-	options = {"-name", "-x1", "-x2", "-y1", "-y2", "-id"};
-}
-
 
 void Display::process(std::vector<std::string> tokens)
 {
@@ -138,7 +190,11 @@ void Display::process(std::vector<std::string> tokens)
 	printOptValues();
 };
 
-void ChangeId::process(std::vector<std::string> tokens)
+// -----------------------------------------------------------------
+// --CHANGE
+// -----------------------------------------------------------------
+
+void Change::process(std::vector<std::string> tokens)
 {
 	option_values.clear();
 	tokens.erase(tokens.begin());
@@ -149,23 +205,52 @@ void ChangeId::process(std::vector<std::string> tokens)
 	}
 	getOptions(tokens);
 	printOptValues();
+};
 
+void Change::execute(Document &document)
+{
+	(void)document;
+	std::cout <<__PRETTY_FUNCTION__ << std::endl;
+}
+
+Change::Change()
+{
+	options = {"-name", "-x1", "-x2", "-y1", "-y2", "-id"};
+}
+
+// -----------------------------------------------------------------
+
+
+//---LIST
+// -----------------------------------------------------------------
+List::List()
+{
 
 };
 
 void List::process(std::vector<std::string> tokens)
 {
-	option_values.clear();
+	// option_values.clear();
 	tokens.erase(tokens.begin());
 	tokens.shrink_to_fit();
-	// if (tokens.empty())
-	// {
-	// 	throw std::invalid_argument("Not enough arguments for command");
-	// }
-	getOptions(tokens);
-	printOptValues();
+	if (!tokens.empty())
+	{
+		throw std::invalid_argument("List has no any options!");
+	}
+	// getOptions(tokens);
+	// printOptValues();
 
-};
+}
+
+void List::execute(Document &document)
+{
+	document.listCurrentSlide();
+}
+// -----------------------------------------------------------------
+
+
+//---EXIT--
+// -----------------------------------------------------------------
 
 void Exit::process(std::vector<std::string> tokens)
 {
@@ -177,7 +262,24 @@ void Exit::process(std::vector<std::string> tokens)
 // 	{
 // 		throw std::invalid_argument("Not enough arguments for command");
 // 	}
+}
+void Exit::execute(Document &document)
+{
+	(void)document;
+	std::cout <<__PRETTY_FUNCTION__ << std::endl;
+
 };
+
+// -----------------------------------------------------------------
+
+//---SAVE--
+// -----------------------------------------------------------------
+
+
+Save::Save()
+{
+	options = {"-file"};
+}
 
 void Save::process(std::vector<std::string> tokens)
 {
@@ -191,7 +293,21 @@ void Save::process(std::vector<std::string> tokens)
 	getOptions(tokens);
 	printOptValues();
 
+}
+void Save::execute(Document &document)
+{
+	(void)document;
+	std::cout <<__PRETTY_FUNCTION__ << std::endl;
+
 };
+// -----------------------------------------------------------------
+
+//---LOAD--
+
+Load::Load()
+{
+	options = {"-file"};
+}
 
 void Load::process(std::vector<std::string> tokens)
 {
@@ -205,4 +321,12 @@ void Load::process(std::vector<std::string> tokens)
 	getOptions(tokens);
 	printOptValues();
 
+}
+void Load::execute(Document &document)
+{
+	(void)document;
+	std::cout <<__PRETTY_FUNCTION__ << std::endl;
+
 };
+
+// -----------------------------------------------------------------
