@@ -11,7 +11,7 @@ int	Application::run()
 			Validator::tokenize(input, tokens);
 			Validator::validateCommand(tokens.front(), registry, cmd);
 			registry[cmd]->process(tokens);	
-			registry[cmd]->execute(storage);
+			registry[cmd]->execute(document);
 		}
 		catch(const std::exception& e)
 		{

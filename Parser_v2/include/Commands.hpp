@@ -6,8 +6,9 @@
 #include <iostream>
 #include <map>
 #include "ItemRegistry.hpp"
-#include "Storage.hpp"
+#include "Slide.hpp"
 #include "Utils.hpp"
+#include "Document.hpp"
 
 
 class Command
@@ -16,7 +17,7 @@ class Command
 		Command() = default;
 		virtual ~Command() = default;
 		
-		virtual	void execute(Storage& storage)  = 0;
+		virtual	void execute(Document& slide)  = 0;
 		virtual	void process(std::vector<std::string> tokens) = 0;
 
 
@@ -44,7 +45,7 @@ class Add
 	:	public	Command
 {
 	public:
-		void execute(Storage& storage);
+		void execute(Document& slide);
 		void process(std::vector<std::string> tokens);
 
 		Add();
@@ -63,7 +64,7 @@ class Remove
 	public:
 		void process(std::vector<std::string> tokens);
 
-		void execute(Storage& storage);
+		void execute(Document& slide);
 		Remove();
 		~Remove() = default;
 	private:
@@ -76,7 +77,7 @@ class Display
 	public:
 		void process(std::vector<std::string> tokens);
 
-		void execute(Storage& storage);
+		void execute(Document& slide);
 		Display();
 		~Display() = default;
 };
@@ -87,7 +88,7 @@ class Change
 	public:
 		void process(std::vector<std::string> tokens);
 
-		void execute(Storage& storage);
+		void execute(Document& slide);
 		Change();
 		~Change() = default;
 };
@@ -97,7 +98,7 @@ class List
 {
 	public:
 		void process(std::vector<std::string> tokens);
-		void execute(Storage& storage);
+		void execute(Document& slide);
 		List();
 		~List() = default;
 };
@@ -107,7 +108,7 @@ class Exit
 {
 	public:
 		void process(std::vector<std::string> tokens);
-		void execute(Storage& storage);
+		void execute(Document& slide);
 		Exit(){};
 		~Exit() = default;
 };
@@ -117,7 +118,7 @@ class Save
 {
 	public:
 		void process(std::vector<std::string> tokens);
-		void execute(Storage& storage);
+		void execute(Document& slide);
 		Save();
 		~Save() = default;
 };
@@ -127,7 +128,7 @@ class Load
 {
 	public:
 		void process(std::vector<std::string> tokens);
-		void execute(Storage& storage);
+		void execute(Document& slide);
 		Load();
 		~Load() = default;
 };

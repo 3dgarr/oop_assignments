@@ -1,15 +1,15 @@
-# ifndef STORAGE_HPP
-# define STORAGE_HPP
+# ifndef SLIDE_HPP
+# define SLIDE_HPP
 
 #include <iostream>
 #include <memory>
 #include <vector>
 
+
 #include "Items.hpp"
 
 
-
-class Storage
+class Slide
 {
 	public:
 		using iterator			= typename std::vector<std::unique_ptr<Item>>::iterator;
@@ -20,7 +20,6 @@ class Storage
 		iterator		end();
 		const_iterator	cbegin();
 		const_iterator	cend();
-		// std::unique_ptr<Item>	operator[](int);
 		
 
 	
@@ -30,9 +29,6 @@ class Storage
 
 		size_t	size() const;
 
-		Storage()	= default;
-		~Storage()	= default;
-
 
 	private:
 		std::vector<std::unique_ptr<Item>>	items;
@@ -40,4 +36,4 @@ class Storage
 };
 
 
-# endif// STORAGE_HPP
+# endif// SLIDE_HPP

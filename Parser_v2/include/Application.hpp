@@ -6,9 +6,10 @@
 # include <vector>
 
 # include "CommandRegistry.hpp"
-# include "Storage.hpp"
+# include "Slide.hpp"
 # include "Validator.hpp"
 # include "Utils.hpp"
+# include "Document.hpp"
 
 class Application
 {
@@ -29,7 +30,9 @@ class Application
 		std::string					input;
 		std::vector<std::string>	tokens;
 		CommandRegistry				registry;
-		Storage						storage;
+		Slide						slide;
+
+		Document	document;
 		
 };
 

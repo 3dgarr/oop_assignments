@@ -84,12 +84,13 @@ void Add::process(std::vector<std::string> tokens)
 	// printOptValues();
 }
 
-void Add::execute(Storage &storage)
+void Add::execute(Document &document)
 {
 	// std::cout <<__PRETTY_FUNCTION__ << std::endl;
 	// std::cout << "ITEM IS -> " << item->getType() << std::endl;
-	// std::cout << "SIZE IS -> " << storage.size() << std::endl;
-	storage.addItem(std::move(item));
+	// std::cout << "SIZE IS -> " << document.size() << std::endl;
+	// document.addItem(std::move(item));
+	document.addToCurrentSlide(std::move(item));
 	std::cout  << GREEN << "Item added succesfully" << DEFAULT << std::endl;
 }
 
@@ -121,14 +122,15 @@ Remove::Remove()
 }
 
 
-void Remove::execute(Storage &storage)
+void Remove::execute(Document &document)
 {
 	size_t	index = id;
-	if (index >= storage.size())
+	if (index >= document.currentSlideSize())
 	{
 		throw std::invalid_argument("Out of range value: " + option_values["-id"]);
 	}
-	storage.removeItem(index);
+	// document.removeItem(index);
+	document.removeItemFromCurrentSlide(index);
 	std::cout  << GREEN << "Item removed succesfully" << DEFAULT << std::endl;
 	// std::cout <<__PRETTY_FUNCTION__ << std::endl;
 }
@@ -164,9 +166,9 @@ void Remove::process(std::vector<std::string> tokens)
 // --DISPLAY
 // -----------------------------------------------------------------
 
-void Display::execute(Storage &storage)
+void Display::execute(Document &document)
 {
-	(void)storage;
+	(void)document;
 	std::cout <<__PRETTY_FUNCTION__ << std::endl;
 }
 
@@ -205,9 +207,9 @@ void Change::process(std::vector<std::string> tokens)
 	printOptValues();
 };
 
-void Change::execute(Storage &storage)
+void Change::execute(Document &document)
 {
-	(void)storage;
+	(void)document;
 	std::cout <<__PRETTY_FUNCTION__ << std::endl;
 }
 
@@ -240,26 +242,9 @@ void List::process(std::vector<std::string> tokens)
 
 }
 
-void List::execute(Storage &storage)
+void List::execute(Document &document)
 {
-	size_t	index = 0;
-	Storage::iterator it = storage.begin();
-	Storage::iterator end = storage.end();
-
-	if (std::distance(it, end) == 0)
-	{
-		std::cout << "Empty storage" << std::endl;
-		return;
-	}
-
-	for (Storage::iterator it = storage.begin(); it != storage.end(); ++it)
-	{
-		std::cout << index++ << ": " << it->get()->getType() << std::endl;
-		
-	}
-	
-	// std::cout <<__PRETTY_FUNCTION__ << std::endl;
-
+	document.listCurrentSlide();
 }
 // -----------------------------------------------------------------
 
@@ -278,9 +263,9 @@ void Exit::process(std::vector<std::string> tokens)
 // 		throw std::invalid_argument("Not enough arguments for command");
 // 	}
 }
-void Exit::execute(Storage &storage)
+void Exit::execute(Document &document)
 {
-	(void)storage;
+	(void)document;
 	std::cout <<__PRETTY_FUNCTION__ << std::endl;
 
 };
@@ -309,9 +294,9 @@ void Save::process(std::vector<std::string> tokens)
 	printOptValues();
 
 }
-void Save::execute(Storage &storage)
+void Save::execute(Document &document)
 {
-	(void)storage;
+	(void)document;
 	std::cout <<__PRETTY_FUNCTION__ << std::endl;
 
 };
@@ -337,9 +322,9 @@ void Load::process(std::vector<std::string> tokens)
 	printOptValues();
 
 }
-void Load::execute(Storage &storage)
+void Load::execute(Document &document)
 {
-	(void)storage;
+	(void)document;
 	std::cout <<__PRETTY_FUNCTION__ << std::endl;
 
 };
