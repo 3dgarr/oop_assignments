@@ -63,7 +63,7 @@ Add::Add()
 };
 
 
-void Add::process(std::vector<std::string> tokens)
+std::unique_ptr<IAction> Add::process(std::vector<std::string> tokens, Document& document)
 {
 	option_values.clear();
 	tokens.erase(tokens.begin());
@@ -80,19 +80,21 @@ void Add::process(std::vector<std::string> tokens)
 	getOptions(tokens);
 
 	item = itemReg.getNewItem(nameOfItem);
-
-	// printOptValues();
+	auto addAction = std::make_unique<AddItemAction>(AddItemAction(document, std::move(item)));
+	
+	
+	return addAction;
 }
 
-void Add::execute(Document &document)
-{
-	// std::cout <<__PRETTY_FUNCTION__ << std::endl;
-	// std::cout << "ITEM IS -> " << item->getType() << std::endl;
-	// std::cout << "SIZE IS -> " << document.size() << std::endl;
-	// document.addItem(std::move(item));
-	document.addToCurrentSlide(std::move(item));
-	std::cout  << GREEN << "Item added succesfully" << DEFAULT << std::endl;
-}
+// void Add::execute(Document &document)
+// {
+// 	// std::cout <<__PRETTY_FUNCTION__ << std::endl;
+// 	// std::cout << "ITEM IS -> " << item->getType() << std::endl;
+// 	// std::cout << "SIZE IS -> " << document.size() << std::endl;
+// 	// document.addItem(std::move(item));
+// 	document.addToCurrentSlide(std::move(item));
+// 	std::cout  << GREEN << "Item added succesfully" << DEFAULT << std::endl;
+// }
 
 
 void Add::getNameOfItem(std::vector<std::string>& tokens)
@@ -122,20 +124,20 @@ Remove::Remove()
 }
 
 
-void Remove::execute(Document &document)
-{
-	size_t	index = id;
-	if (index >= document.currentSlideSize())
-	{
-		throw std::invalid_argument("Out of range value: " + option_values["-id"]);
-	}
-	// document.removeItem(index);
-	document.removeItemFromCurrentSlide(index);
-	std::cout  << GREEN << "Item removed succesfully" << DEFAULT << std::endl;
-	// std::cout <<__PRETTY_FUNCTION__ << std::endl;
-}
+// void Remove::execute(Document &document)
+// {
+// 	size_t	index = id;
+// 	if (index >= document.currentSlideSize())
+// 	{
+// 		throw std::invalid_argument("Out of range value: " + option_values["-id"]);
+// 	}
+// 	// document.removeItem(index);
+// 	document.removeItemFromCurrentSlide(index);
+// 	std::cout  << GREEN << "Item removed succesfully" << DEFAULT << std::endl;
+// 	// std::cout <<__PRETTY_FUNCTION__ << std::endl;
+// }
 
-void Remove::process(std::vector<std::string> tokens)
+std::unique_ptr<IAction> Remove::process(std::vector<std::string> tokens, Document& document)
 {
 	option_values.clear();
 	tokens.erase(tokens.begin());
@@ -158,6 +160,10 @@ void Remove::process(std::vector<std::string> tokens)
 	{
 		throw std::invalid_argument("Invalid value: " + option_values["-id"]);
 	}
+	 
+	auto action = std::make_unique<RemoveItemAction>(RemoveItemAction(document, id));
+	return action;
+
 	// printOptValues();
 };
 // -----------------------------------------------------------------
@@ -166,35 +172,53 @@ void Remove::process(std::vector<std::string> tokens)
 // --DISPLAY
 // -----------------------------------------------------------------
 
-void Display::execute(Document &document)
-{
-	(void)document;
-	std::cout <<__PRETTY_FUNCTION__ << std::endl;
-}
+// void Display::execute(Document &document)
+// {
+// 	(void)document;
+// 	std::cout <<__PRETTY_FUNCTION__ << std::endl;
+// }
 
 Display::Display()
 {
 	options = {"-id"};
 }
 
-void Display::process(std::vector<std::string> tokens)
+std::unique_ptr<IAction> Display::process(std::vector<std::string> tokens, Document& document)
 {
 	option_values.clear();
 	tokens.erase(tokens.begin());
 	tokens.shrink_to_fit();
+	
 	if (tokens.empty())
 	{
 		throw std::invalid_argument("Not enough arguments for command");
 	}
 	getOptions(tokens);
-	printOptValues();
+
+	int id;
+
+	try
+	{
+		///TODO: need to empower this part, 12t is valid, t12 is not
+		id = std::stoi(option_values["-id"]);
+		if (id < 0)
+			throw (std::exception{});
+	}
+	catch(const std::exception& e)
+	{
+		throw std::invalid_argument("Invalid value: " + option_values["-id"]);
+	}
+	 
+	auto action = std::make_unique<DisplayAction>(DisplayAction(document, id));
+	return action;
+
 };
 
 // -----------------------------------------------------------------
 // --CHANGE
 // -----------------------------------------------------------------
 
-void Change::process(std::vector<std::string> tokens)
+std::unique_ptr<IAction> Change::process(std::vector<std::string> tokens, Document& document)
 {
 	option_values.clear();
 	tokens.erase(tokens.begin());
@@ -205,13 +229,16 @@ void Change::process(std::vector<std::string> tokens)
 	}
 	getOptions(tokens);
 	printOptValues();
+
+	auto action = std::make_unique<ChangeAction>(ChangeAction(document));
+	return action;
 };
 
-void Change::execute(Document &document)
-{
-	(void)document;
-	std::cout <<__PRETTY_FUNCTION__ << std::endl;
-}
+// void Change::execute(Document &document)
+// {
+// 	(void)document;
+// 	std::cout <<__PRETTY_FUNCTION__ << std::endl;
+// }
 
 Change::Change()
 {
@@ -228,7 +255,7 @@ List::List()
 
 };
 
-void List::process(std::vector<std::string> tokens)
+std::unique_ptr<IAction> List::process(std::vector<std::string> tokens, Document& document)
 {
 	// option_values.clear();
 	tokens.erase(tokens.begin());
@@ -240,19 +267,17 @@ void List::process(std::vector<std::string> tokens)
 	// getOptions(tokens);
 	// printOptValues();
 
+	auto action = std::make_unique<ListAction>(ListAction(document));
+	return action;
 }
 
-void List::execute(Document &document)
-{
-	document.listCurrentSlide();
-}
 // -----------------------------------------------------------------
 
 
 //---EXIT--
 // -----------------------------------------------------------------
 
-void Exit::process(std::vector<std::string> tokens)
+std::unique_ptr<IAction> Exit::process(std::vector<std::string> tokens, Document& document)
 {
 	option_values.clear();
 	tokens.erase(tokens.begin());
@@ -262,13 +287,16 @@ void Exit::process(std::vector<std::string> tokens)
 // 	{
 // 		throw std::invalid_argument("Not enough arguments for command");
 // 	}
-}
-void Exit::execute(Document &document)
-{
-	(void)document;
-	std::cout <<__PRETTY_FUNCTION__ << std::endl;
+	auto action = std::make_unique<ExitAction>(ExitAction(document));
+	return action;
 
-};
+}
+// void Exit::execute(Document &document)
+// {
+// 	(void)document;
+// 	std::cout <<__PRETTY_FUNCTION__ << std::endl;
+
+// };
 
 // -----------------------------------------------------------------
 
@@ -281,7 +309,7 @@ Save::Save()
 	options = {"-file"};
 }
 
-void Save::process(std::vector<std::string> tokens)
+std::unique_ptr<IAction> Save::process(std::vector<std::string> tokens, Document& document)
 {
 	option_values.clear();
 	tokens.erase(tokens.begin());
@@ -293,13 +321,16 @@ void Save::process(std::vector<std::string> tokens)
 	getOptions(tokens);
 	printOptValues();
 
-}
-void Save::execute(Document &document)
-{
-	(void)document;
-	std::cout <<__PRETTY_FUNCTION__ << std::endl;
+	auto action = std::make_unique<SaveAction>(SaveAction(document));
+	return action;
 
-};
+}
+// void Save::execute(Document &document)
+// {
+// 	(void)document;
+// 	std::cout <<__PRETTY_FUNCTION__ << std::endl;
+
+// };
 // -----------------------------------------------------------------
 
 //---LOAD--
@@ -309,7 +340,7 @@ Load::Load()
 	options = {"-file"};
 }
 
-void Load::process(std::vector<std::string> tokens)
+std::unique_ptr<IAction> Load::process(std::vector<std::string> tokens, Document& document)
 {
 	option_values.clear();
 	tokens.erase(tokens.begin());
@@ -321,12 +352,15 @@ void Load::process(std::vector<std::string> tokens)
 	getOptions(tokens);
 	printOptValues();
 
-}
-void Load::execute(Document &document)
-{
-	(void)document;
-	std::cout <<__PRETTY_FUNCTION__ << std::endl;
+	auto action = std::make_unique<LoadAction>(LoadAction(document));
+	return action;
 
-};
+}
+// void Load::execute(Document &document)
+// {
+// 	(void)document;
+// 	std::cout <<__PRETTY_FUNCTION__ << std::endl;
+
+// };
 
 // -----------------------------------------------------------------

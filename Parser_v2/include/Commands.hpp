@@ -9,6 +9,7 @@
 #include "Slide.hpp"
 #include "Utils.hpp"
 #include "Document.hpp"
+#include "Actions.hpp"
 
 
 class Command
@@ -17,22 +18,14 @@ class Command
 		Command() = default;
 		virtual ~Command() = default;
 		
-		virtual	void execute(Document& slide)  = 0;
-		virtual	void process(std::vector<std::string> tokens) = 0;
+		// virtual	void execute(Document& slide)  = 0;
+		// virtual	void process(std::vector<std::string> tokens) = 0;
+		virtual	std::unique_ptr<IAction> process(std::vector<std::string> tokens, Document& document) = 0;
 
 
 		virtual	void getOptions(std::vector<std::string>& tokens);
 		virtual	void printOptValues() const;
 		virtual	std::string stringToLower(std::string s);
-		// {
-		// 	std::transform(s.begin(), s.end(), s.begin(), 
-		// 				// static_cast<int(*)(int)>(std::tolower)         // wrong
-		// 				// [](int c){ return std::tolower(c); }           // wrong
-		// 				// [](char c){ return std::tolower(c); }          // wrong
-		// 				[](unsigned char c){ return std::tolower(c); } // correct
-		// 				);
-		// 	return s;
-		// }
 		
 
 	protected:
@@ -45,8 +38,10 @@ class Add
 	:	public	Command
 {
 	public:
-		void execute(Document& slide);
-		void process(std::vector<std::string> tokens);
+		// void execute(Document& slide);
+		virtual	std::unique_ptr<IAction> process(std::vector<std::string> tokens, Document& document);
+		// void process(std::vector<std::string> tokens);
+
 
 		Add();
 		~Add() = default;
@@ -62,9 +57,10 @@ class Remove
 	:	public Command
 {
 	public:
-		void process(std::vector<std::string> tokens);
+		virtual	std::unique_ptr<IAction> process(std::vector<std::string> tokens, Document& document);
+		// void process(std::vector<std::string> tokens);
 
-		void execute(Document& slide);
+		// void execute(Document& slide);
 		Remove();
 		~Remove() = default;
 	private:
@@ -75,9 +71,11 @@ class Display
 	: public Command
 {
 	public:
-		void process(std::vector<std::string> tokens);
+		virtual	std::unique_ptr<IAction> process(std::vector<std::string> tokens, Document& document);
 
-		void execute(Document& slide);
+		// void process(std::vector<std::string> tokens);
+
+		// void execute(Document& slide);
 		Display();
 		~Display() = default;
 };
@@ -86,9 +84,11 @@ class Change
 	: public Command
 {
 	public:
-		void process(std::vector<std::string> tokens);
+		virtual	std::unique_ptr<IAction> process(std::vector<std::string> tokens, Document& document);
 
-		void execute(Document& slide);
+		// void process(std::vector<std::string> tokens);
+
+		// void execute(Document& slide);
 		Change();
 		~Change() = default;
 };
@@ -97,8 +97,9 @@ class List
 	:	public Command
 {
 	public:
-		void process(std::vector<std::string> tokens);
-		void execute(Document& slide);
+		virtual	std::unique_ptr<IAction> process(std::vector<std::string> tokens, Document& document);
+		// void process(std::vector<std::string> tokens);
+		// void execute(Document& slide);
 		List();
 		~List() = default;
 };
@@ -107,8 +108,9 @@ class Exit
 	:	public Command
 {
 	public:
-		void process(std::vector<std::string> tokens);
-		void execute(Document& slide);
+		virtual	std::unique_ptr<IAction> process(std::vector<std::string> tokens, Document& document);
+		// void process(std::vector<std::string> tokens);
+		// void execute(Document& slide);
 		Exit(){};
 		~Exit() = default;
 };
@@ -117,8 +119,10 @@ class Save
 	:	public Command
 {
 	public:
-		void process(std::vector<std::string> tokens);
-		void execute(Document& slide);
+		virtual	std::unique_ptr<IAction> process(std::vector<std::string> tokens, Document& document);
+		
+		// void process(std::vector<std::string> tokens);
+		// void execute(Document& slide);
 		Save();
 		~Save() = default;
 };
@@ -127,8 +131,9 @@ class Load
 	:	public Command
 {
 	public:
-		void process(std::vector<std::string> tokens);
-		void execute(Document& slide);
+		virtual	std::unique_ptr<IAction> process(std::vector<std::string> tokens, Document& document);
+		// void process(std::vector<std::string> tokens);
+		// void execute(Document& slide);
 		Load();
 		~Load() = default;
 };
