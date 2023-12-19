@@ -10,8 +10,9 @@ int	Application::run()
 			getInput();
 			Validator::tokenize(input, tokens);
 			Validator::validateCommand(tokens.front(), registry, cmd);
-			std::unique_ptr<IAction> action = registry[cmd]->process(tokens, document);
-			action->execute();
+			std::unique_ptr<IAction> action = registry[cmd]->process(tokens, director.getCurrentDocument());
+			director.runAction(std::move(action));
+			// action->execute();
 		}
 		catch(const std::exception& e)
 		{

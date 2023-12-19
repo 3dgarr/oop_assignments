@@ -3,10 +3,9 @@
 
 # include <vector>
 # include <memory>
+# include "Slide.hpp"
 
-class Slide;
 class Item;
-
 
 class Document
 {
@@ -32,6 +31,7 @@ class Document
 
 	public:
 		Document();
+		// Document(const Document&) = default;
 
 	private:
 		std::vector<std::unique_ptr<Slide>> slides;

@@ -9,7 +9,7 @@
 # include "Slide.hpp"
 # include "Validator.hpp"
 # include "Utils.hpp"
-# include "Document.hpp"
+# include "Director.hpp"
 
 class Application
 {
@@ -30,10 +30,8 @@ class Application
 		std::string					input;
 		std::vector<std::string>	tokens;
 		CommandRegistry				registry;
-		Slide						slide;
-
-		Document	document;
-		
+		// Document					document;
+		Director					director;
 };
 
 

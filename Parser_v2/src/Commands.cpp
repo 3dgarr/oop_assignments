@@ -63,7 +63,7 @@ Add::Add()
 };
 
 
-std::unique_ptr<IAction> Add::process(std::vector<std::string> tokens, Document& document)
+std::unique_ptr<IAction> Add::process(std::vector<std::string> tokens, std::shared_ptr<Document> document)
 {
 	option_values.clear();
 	tokens.erase(tokens.begin());
@@ -85,16 +85,6 @@ std::unique_ptr<IAction> Add::process(std::vector<std::string> tokens, Document&
 	
 	return addAction;
 }
-
-// void Add::execute(Document &document)
-// {
-// 	// std::cout <<__PRETTY_FUNCTION__ << std::endl;
-// 	// std::cout << "ITEM IS -> " << item->getType() << std::endl;
-// 	// std::cout << "SIZE IS -> " << document.size() << std::endl;
-// 	// document.addItem(std::move(item));
-// 	document.addToCurrentSlide(std::move(item));
-// 	std::cout  << GREEN << "Item added succesfully" << DEFAULT << std::endl;
-// }
 
 
 void Add::getNameOfItem(std::vector<std::string>& tokens)
@@ -137,7 +127,7 @@ Remove::Remove()
 // 	// std::cout <<__PRETTY_FUNCTION__ << std::endl;
 // }
 
-std::unique_ptr<IAction> Remove::process(std::vector<std::string> tokens, Document& document)
+std::unique_ptr<IAction> Remove::process(std::vector<std::string> tokens, std::shared_ptr<Document> document)
 {
 	option_values.clear();
 	tokens.erase(tokens.begin());
@@ -183,7 +173,7 @@ Display::Display()
 	options = {"-id"};
 }
 
-std::unique_ptr<IAction> Display::process(std::vector<std::string> tokens, Document& document)
+std::unique_ptr<IAction> Display::process(std::vector<std::string> tokens, std::shared_ptr<Document> document)
 {
 	option_values.clear();
 	tokens.erase(tokens.begin());
@@ -218,7 +208,7 @@ std::unique_ptr<IAction> Display::process(std::vector<std::string> tokens, Docum
 // --CHANGE
 // -----------------------------------------------------------------
 
-std::unique_ptr<IAction> Change::process(std::vector<std::string> tokens, Document& document)
+std::unique_ptr<IAction> Change::process(std::vector<std::string> tokens, std::shared_ptr<Document> document)
 {
 	option_values.clear();
 	tokens.erase(tokens.begin());
@@ -255,7 +245,7 @@ List::List()
 
 };
 
-std::unique_ptr<IAction> List::process(std::vector<std::string> tokens, Document& document)
+std::unique_ptr<IAction> List::process(std::vector<std::string> tokens, std::shared_ptr<Document> document)
 {
 	// option_values.clear();
 	tokens.erase(tokens.begin());
@@ -277,7 +267,7 @@ std::unique_ptr<IAction> List::process(std::vector<std::string> tokens, Document
 //---EXIT--
 // -----------------------------------------------------------------
 
-std::unique_ptr<IAction> Exit::process(std::vector<std::string> tokens, Document& document)
+std::unique_ptr<IAction> Exit::process(std::vector<std::string> tokens, std::shared_ptr<Document> document)
 {
 	option_values.clear();
 	tokens.erase(tokens.begin());
@@ -291,12 +281,6 @@ std::unique_ptr<IAction> Exit::process(std::vector<std::string> tokens, Document
 	return action;
 
 }
-// void Exit::execute(Document &document)
-// {
-// 	(void)document;
-// 	std::cout <<__PRETTY_FUNCTION__ << std::endl;
-
-// };
 
 // -----------------------------------------------------------------
 
@@ -309,7 +293,7 @@ Save::Save()
 	options = {"-file"};
 }
 
-std::unique_ptr<IAction> Save::process(std::vector<std::string> tokens, Document& document)
+std::unique_ptr<IAction> Save::process(std::vector<std::string> tokens, std::shared_ptr<Document> document)
 {
 	option_values.clear();
 	tokens.erase(tokens.begin());
@@ -325,12 +309,6 @@ std::unique_ptr<IAction> Save::process(std::vector<std::string> tokens, Document
 	return action;
 
 }
-// void Save::execute(Document &document)
-// {
-// 	(void)document;
-// 	std::cout <<__PRETTY_FUNCTION__ << std::endl;
-
-// };
 // -----------------------------------------------------------------
 
 //---LOAD--
@@ -340,7 +318,7 @@ Load::Load()
 	options = {"-file"};
 }
 
-std::unique_ptr<IAction> Load::process(std::vector<std::string> tokens, Document& document)
+std::unique_ptr<IAction> Load::process(std::vector<std::string> tokens, std::shared_ptr<Document> document)
 {
 	option_values.clear();
 	tokens.erase(tokens.begin());
@@ -356,11 +334,37 @@ std::unique_ptr<IAction> Load::process(std::vector<std::string> tokens, Document
 	return action;
 
 }
-// void Load::execute(Document &document)
-// {
-// 	(void)document;
-// 	std::cout <<__PRETTY_FUNCTION__ << std::endl;
 
-// };
+
+std::unique_ptr<IAction> Undo::process(std::vector<std::string> tokens, std::shared_ptr<Document> document)
+{
+	option_values.clear();
+	tokens.erase(tokens.begin());
+	tokens.shrink_to_fit();
+// 	getOptions(tokens);
+// 	if (tokens.empty())
+// 	{
+// 		throw std::invalid_argument("Not enough arguments for command");
+// 	}
+	auto action = std::make_unique<UndoAction>(UndoAction(document));
+	return action;
+}
+
+
+std::unique_ptr<IAction> Redo::process(std::vector<std::string> tokens, std::shared_ptr<Document> document)
+{
+	option_values.clear();
+	tokens.erase(tokens.begin());
+	tokens.shrink_to_fit();
+// 	getOptions(tokens);
+// 	if (tokens.empty())
+// 	{
+// 		throw std::invalid_argument("Not enough arguments for command");
+// 	}
+	auto action = std::make_unique<RedoAction>(RedoAction(document));
+	return action;
+}
+
+
 
 // -----------------------------------------------------------------

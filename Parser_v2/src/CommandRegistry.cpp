@@ -11,6 +11,8 @@ CommandRegistry::CommandRegistry()
 	registry["exit"]	= std::make_unique<Exit>();
 	registry["save"]	= std::make_unique<Save>();
 	registry["load"]	= std::make_unique<Load>();
+	registry["undo"]	= std::make_unique<Undo>();
+	registry["redo"]	= std::make_unique<Redo>();
 
 }
 

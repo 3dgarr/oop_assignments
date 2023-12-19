@@ -55,22 +55,15 @@ void Document::listCurrentSlide() const
 	for (Slide::iterator it = start; it != end; ++it)
 	{
 		std::cout << index++ << ": " << it->get()->getType() << std::endl;
-		
 	}
-	
 }
-
-
-
 
 
 Document::Document()
 {
-	// CHGITEEEEM
-	std::unique_ptr<Slide> slide = std::move(std::make_unique<Slide>(Slide()));
-	slides.push_back(std::move(slide));
+	// std::unique_ptr<Slide> slide = std::make_unique<Slide>();
+	slides.push_back(std::make_unique<Slide>(Slide()));
 	current_slide = slides.begin();
-	
 }
 
 

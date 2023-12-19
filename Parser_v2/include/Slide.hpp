@@ -26,6 +26,7 @@ class Slide
 	public:
 		void	addItem(std::unique_ptr<Item>);
 		void	removeItem(size_t);
+		// Slide(const Slide&) = default;
 
 		size_t	size() const;
 

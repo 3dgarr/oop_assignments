@@ -17,11 +17,11 @@ class AddItemAction
 {
 
 	public:
-		AddItemAction(Document& doc, std::unique_ptr<Item> it);
+		AddItemAction(std::shared_ptr<Document> doc, std::unique_ptr<Item> it);
 		void execute() override;
 	
 	private:
-		Document& document;
+		std::shared_ptr<Document> document;
 		std::unique_ptr<Item> item;
 };
 
@@ -29,11 +29,11 @@ class RemoveItemAction
 	:	public IAction
 {
 		public:
-			RemoveItemAction(Document& doc, size_t id);
+			RemoveItemAction(std::shared_ptr<Document> doc, size_t id);
 			void execute() override;
 		
 		private:
-			Document& document;
+			std::shared_ptr<Document> document;
 			size_t item_id;
 };
 
@@ -42,23 +42,23 @@ class ListAction
 	:	public IAction
 {
 		public:
-			ListAction(Document& doc);
+			ListAction(std::shared_ptr<Document> doc);
 			void execute() override;
 
 		private:
-			Document& document;
+			std::shared_ptr<Document> document;
 };
 
 class DisplayAction
 	:	public IAction
 {
 		public:
-			DisplayAction(Document& doc, size_t id);
+			DisplayAction(std::shared_ptr<Document> doc, size_t id);
 
 			void execute() override;
 		
 		private:
-			Document& document;
+			std::shared_ptr<Document> document;
 			size_t item_id;
 };
 
@@ -66,49 +66,75 @@ class ChangeAction
 	:	public IAction
 {
 		public:
-			ChangeAction(Document& doc);
+			ChangeAction(std::shared_ptr<Document> doc);
 
 			void execute() override;
 		
 		private:
-			Document& document;
+			std::shared_ptr<Document> document;
 };
 
 class SaveAction
 	:	public IAction
 {
 		public:
-			SaveAction(Document& doc);
+			SaveAction(std::shared_ptr<Document> doc);
 
 			void execute() override;
 
 		private:
-			Document& document;
+			std::shared_ptr<Document> document;
 };
 
 class LoadAction
 	:	public IAction
 {
 		public:
-			LoadAction(Document& doc);
+			LoadAction(std::shared_ptr<Document> doc);
 
 			void execute() override;
 
 		private:
-			Document& document;
+			std::shared_ptr<Document> document;
 };
 
 class ExitAction
 	:	public IAction
 {
 		public:
-			ExitAction(Document& doc);
+			ExitAction(std::shared_ptr<Document> doc);
 
 			void execute() override;
 
 		private:
-			Document& document;
+			std::shared_ptr<Document> document;
 };
+
+class RedoAction
+	:	public IAction
+{
+		public:
+			RedoAction(std::shared_ptr<Document> doc);
+
+			void execute() override;
+
+		private:
+			std::shared_ptr<Document> document;
+};
+
+
+class UndoAction
+	:	public IAction
+{
+		public:
+			UndoAction(std::shared_ptr<Document> doc);
+
+			void execute() override;
+
+		private:
+			std::shared_ptr<Document> document;
+};
+
 # endif// ACTIONST_HPP
 
 // "add"

@@ -18,9 +18,7 @@ class Command
 		Command() = default;
 		virtual ~Command() = default;
 		
-		// virtual	void execute(Document& slide)  = 0;
-		// virtual	void process(std::vector<std::string> tokens) = 0;
-		virtual	std::unique_ptr<IAction> process(std::vector<std::string> tokens, Document& document) = 0;
+		virtual	std::unique_ptr<IAction> process(std::vector<std::string> tokens, std::shared_ptr<Document> document) = 0;
 
 
 		virtual	void getOptions(std::vector<std::string>& tokens);
@@ -38,13 +36,9 @@ class Add
 	:	public	Command
 {
 	public:
-		// void execute(Document& slide);
-		virtual	std::unique_ptr<IAction> process(std::vector<std::string> tokens, Document& document);
-		// void process(std::vector<std::string> tokens);
-
+		virtual	std::unique_ptr<IAction> process(std::vector<std::string> tokens, std::shared_ptr<Document> document);
 
 		Add();
-		~Add() = default;
 
 	private:
 		void getNameOfItem(std::vector<std::string>& tokens);
@@ -57,12 +51,10 @@ class Remove
 	:	public Command
 {
 	public:
-		virtual	std::unique_ptr<IAction> process(std::vector<std::string> tokens, Document& document);
-		// void process(std::vector<std::string> tokens);
+		virtual	std::unique_ptr<IAction> process(std::vector<std::string> tokens, std::shared_ptr<Document> document);
 
-		// void execute(Document& slide);
 		Remove();
-		~Remove() = default;
+	
 	private:
 		int	id;
 };
@@ -71,58 +63,42 @@ class Display
 	: public Command
 {
 	public:
-		virtual	std::unique_ptr<IAction> process(std::vector<std::string> tokens, Document& document);
-
-		// void process(std::vector<std::string> tokens);
-
-		// void execute(Document& slide);
+		virtual	std::unique_ptr<IAction> process(std::vector<std::string> tokens, std::shared_ptr<Document> document);
 		Display();
-		~Display() = default;
 };
 
 class Change
 	: public Command
 {
 	public:
-		virtual	std::unique_ptr<IAction> process(std::vector<std::string> tokens, Document& document);
+		virtual	std::unique_ptr<IAction> process(std::vector<std::string> tokens, std::shared_ptr<Document> document);
 
-		// void process(std::vector<std::string> tokens);
-
-		// void execute(Document& slide);
 		Change();
-		~Change() = default;
 };
 
 class List
 	:	public Command
 {
 	public:
-		virtual	std::unique_ptr<IAction> process(std::vector<std::string> tokens, Document& document);
-		// void process(std::vector<std::string> tokens);
-		// void execute(Document& slide);
+		virtual	std::unique_ptr<IAction> process(std::vector<std::string> tokens, std::shared_ptr<Document> document);
 		List();
-		~List() = default;
+
 };
 
 class Exit
 	:	public Command
 {
 	public:
-		virtual	std::unique_ptr<IAction> process(std::vector<std::string> tokens, Document& document);
-		// void process(std::vector<std::string> tokens);
-		// void execute(Document& slide);
+		virtual	std::unique_ptr<IAction> process(std::vector<std::string> tokens, std::shared_ptr<Document> document);
 		Exit(){};
-		~Exit() = default;
 };
 
 class Save
 	:	public Command
 {
 	public:
-		virtual	std::unique_ptr<IAction> process(std::vector<std::string> tokens, Document& document);
+		virtual	std::unique_ptr<IAction> process(std::vector<std::string> tokens, std::shared_ptr<Document> document);
 		
-		// void process(std::vector<std::string> tokens);
-		// void execute(Document& slide);
 		Save();
 		~Save() = default;
 };
@@ -131,10 +107,25 @@ class Load
 	:	public Command
 {
 	public:
-		virtual	std::unique_ptr<IAction> process(std::vector<std::string> tokens, Document& document);
-		// void process(std::vector<std::string> tokens);
-		// void execute(Document& slide);
+		virtual	std::unique_ptr<IAction> process(std::vector<std::string> tokens, std::shared_ptr<Document> document);
 		Load();
-		~Load() = default;
+};
+
+class Undo
+	:	public Command
+{
+	public:
+		virtual	std::unique_ptr<IAction> process(std::vector<std::string> tokens, std::shared_ptr<Document> document);
+		Undo(){};
+		~Undo() = default;
+};
+
+class Redo
+	:	public Command
+{
+	public:
+		virtual	std::unique_ptr<IAction> process(std::vector<std::string> tokens, std::shared_ptr<Document> document);
+		Redo(){};
+		~Redo() = default;
 };
 # endif //COMMAND_HPP
