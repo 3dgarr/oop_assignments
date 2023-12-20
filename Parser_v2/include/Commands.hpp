@@ -128,4 +128,13 @@ class Redo
 		Redo(){};
 		~Redo() = default;
 };
+
+class AddSlide
+	:	public Command
+{
+	public:
+		virtual	std::unique_ptr<IAction> process(std::vector<std::string> tokens, std::shared_ptr<Document> document);
+		AddSlide(){};
+		~AddSlide() = default;
+};
 # endif //COMMAND_HPP

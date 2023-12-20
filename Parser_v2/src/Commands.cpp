@@ -1,7 +1,6 @@
 #include "Commands.hpp"
 #include <iterator>
 #include <algorithm>
-#include <typeinfo>
 #include <iostream>
 
 // --COMMAND
@@ -368,3 +367,18 @@ std::unique_ptr<IAction> Redo::process(std::vector<std::string> tokens, std::sha
 
 
 // -----------------------------------------------------------------
+
+std::unique_ptr<IAction> AddSlide::process(std::vector<std::string> tokens, std::shared_ptr<Document> document)
+{
+	option_values.clear();
+	tokens.erase(tokens.begin());
+	tokens.shrink_to_fit();
+// 	getOptions(tokens);
+// 	if (tokens.empty())
+// 	{
+// 		throw std::invalid_argument("Not enough arguments for command");
+// 	}
+	auto action = std::make_unique<AddSlideAction>(AddSlideAction(document));
+	return action;
+
+}

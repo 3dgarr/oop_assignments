@@ -13,6 +13,7 @@ CommandRegistry::CommandRegistry()
 	registry["load"]	= std::make_unique<Load>();
 	registry["undo"]	= std::make_unique<Undo>();
 	registry["redo"]	= std::make_unique<Redo>();
+	registry["addslide"]= std::make_unique<AddSlide>();
 
 }
 

@@ -19,14 +19,19 @@ class Document
 		iterator		end();
 		const_iterator	cbegin();
 		const_iterator	cend();
-		size_t	currentSlideSize() const;
+		size_t			currentSlideSize() const;
+		std::unique_ptr<Document> clone() const;
+
 
 	public:
-		void addToCurrentSlide(std::unique_ptr<Item>);
-		void removeItemFromCurrentSlide(size_t);
-		iterator& getCurrentSlide();
-		void listCurrentSlide() const;
+		void		addToCurrentSlide(std::unique_ptr<Item>);
+		void		removeItemFromCurrentSlide(size_t);
+		iterator&	getCurrentSlide();
+		void		listCurrentSlide() const;
+		void		addNewSlide();
 
+		size_t		slidesCount() const;
+		
 
 
 	public:

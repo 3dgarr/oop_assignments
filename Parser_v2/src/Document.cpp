@@ -1,5 +1,6 @@
 #include "Document.hpp"
 #include "Slide.hpp"
+#include <algorithm>
 
 auto	Document::begin() -> iterator
 {
@@ -36,6 +37,35 @@ size_t	Document::currentSlideSize() const
 	return (current_slide->get()->size());
 }
 
+std::unique_ptr<Document> Document::clone() const
+{
+	 auto clonedDocument = std::make_unique<Document>();
+    
+    // Deep copy each slide
+    clonedDocument->slides.reserve(slides.size());
+    std::transform(slides.begin(), slides.end(), std::back_inserter(clonedDocument->slides),
+                   [](const auto &slide) {
+						auto clonedSlide = std::make_unique<Slide>();
+						
+						// Deep copy each item in the slide
+						clonedSlide->items.reserve(slide->items.size());
+						std::transform(slide->items.begin(), slide->items.end(), std::back_inserter(clonedSlide->items),
+										[](const auto &item) {
+											// Assuming Item has a virtual clone method
+											return item->clone();
+										});
+						
+                       return clonedSlide;
+                   });
+
+    // Copy the iterator (if it makes sense for your design)
+    // clonedDocument->current_slide = std::next(clonedDocument->slides.cbegin(), std::distance(slides.begin(), current_slide));
+
+
+    return clonedDocument;
+
+}
+
 auto Document::getCurrentSlide() -> iterator&
 {
 	return current_slide;
@@ -58,6 +88,17 @@ void Document::listCurrentSlide() const
 	}
 }
 
+void Document::addNewSlide()
+{
+	slides.push_back(std::make_unique<Slide>(Slide()));
+	current_slide = std::next(current_slide);
+
+}
+
+size_t Document::slidesCount() const
+{
+	return slides.size();
+}
 
 Document::Document()
 {

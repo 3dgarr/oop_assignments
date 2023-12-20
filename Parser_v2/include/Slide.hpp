@@ -31,8 +31,8 @@ class Slide
 		size_t	size() const;
 
 
-	private:
 		std::vector<std::unique_ptr<Item>>	items;
+	private:
 	
 };
 

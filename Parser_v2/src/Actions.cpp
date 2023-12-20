@@ -108,7 +108,17 @@ void RedoAction::execute()
 	std::cout << __PRETTY_FUNCTION__ << std::endl;
 }
 
+AddSlideAction::AddSlideAction(std::shared_ptr<Document> doc)
+	:	document(doc)
+{}
 
+void AddSlideAction::execute()
+{
+	document->addNewSlide();
+
+	std::cout << __PRETTY_FUNCTION__ << std::endl;
+	std::cout << "COUNT OF SLIDES " << document->slidesCount() << std::endl;
+}
 
 
 

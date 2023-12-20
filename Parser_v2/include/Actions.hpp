@@ -135,6 +135,18 @@ class UndoAction
 			std::shared_ptr<Document> document;
 };
 
+class AddSlideAction
+	:	public IAction
+{
+		public:
+			AddSlideAction(std::shared_ptr<Document> doc);
+
+			void execute() override;
+
+		private:
+			std::shared_ptr<Document> document;
+};
+
 # endif// ACTIONST_HPP
 
 // "add"

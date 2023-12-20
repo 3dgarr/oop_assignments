@@ -2,11 +2,12 @@
 # define ITEMS_HPP
 
 #include <iostream>
+#include <memory>
 class Item
 {
 	public:
 		virtual std::string	getType() const = 0;
-		Item() = default;
+		virtual std::unique_ptr<Item> clone() const = 0;
 		virtual ~Item() = default;
 };
 
@@ -16,8 +17,11 @@ class Rectangle
 {
 	public:
 		std::string	getType() const override;
-		Rectangle() = default;
 		virtual ~Rectangle() = default;
+		std::unique_ptr<Item> clone() const override 
+		{
+        	return std::make_unique<Rectangle>(*this);
+    	}
 };
 
 class Elipse
@@ -25,8 +29,11 @@ class Elipse
 {
 	public:
 		std::string	getType() const override;
-		Elipse() = default;
 		virtual ~Elipse() = default;
+		std::unique_ptr<Item> clone() const override 
+		{
+        	return std::make_unique<Elipse>(*this);
+    	}
 };
 
 
@@ -35,8 +42,11 @@ class Line
 {
 	public:
 		std::string	getType() const override;
-		Line() = default;
 		virtual ~Line() = default;
+		std::unique_ptr<Item> clone() const override 
+		{
+        	return std::make_unique<Line>(*this);
+    	}
 };
 
 
@@ -45,8 +55,11 @@ class Trapezoid
 {
 	public:
 		std::string	getType() const override;
-		Trapezoid() = default;
 		virtual ~Trapezoid() = default;
+		std::unique_ptr<Item> clone() const override 
+		{
+        	return std::make_unique<Trapezoid>(*this);
+    	}
 };
 
 class Triangle
@@ -54,8 +67,11 @@ class Triangle
 {
 	public:
 		std::string	getType() const override;
-		Triangle() = default;
 		virtual ~Triangle() = default;
+		std::unique_ptr<Item> clone() const override 
+		{
+        	return std::make_unique<Triangle>(*this);
+    	}
 };
 
 class Circle
@@ -63,8 +79,11 @@ class Circle
 {
 	public:
 		std::string	getType() const override;
-		Circle() = default;
 		virtual ~Circle() = default;
+		std::unique_ptr<Item> clone() const override 
+		{
+        	return std::make_unique<Circle>(*this);
+    	}
 };
 
 
